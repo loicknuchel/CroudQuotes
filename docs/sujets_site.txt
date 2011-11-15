@@ -1,0 +1,21 @@
+Sujets de sites de quotes :
+	- politique :
+		* mon programme 2012 (réflexions publiques 2012 / programme citoyen 2012 / programme populaire 2012)
+		* initiatives citoyennes 2012
+		* citations d'hommes politiques
+		* je m'indigne pour... / cris de révoltés
+		* lois absurdes
+		* casseroles/incohérences politiques/gouvernementales (mesonges politiques)
+	
+	- finance :
+		* optimisation fiscale
+		
+	- news :
+		* informations intéressantes
+		* mes meilleurs liens (limité à 30 post max par auteur => identification pour poster)
+	
+	- fun : 
+		* commentaires de développeurs
+		* si toi aussi...
+		* tu sais que c'est l'été quand... (à décliner !)
+	

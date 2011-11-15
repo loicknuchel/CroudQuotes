@@ -1,0 +1,62 @@
+A FAIRE AVANT MISE EN PROD :
+    - twitter l'ajout d'une nouvelle quote
+    - ajouter pages 
+        * "les derniers commentaires"        => NE SAIT PAS FAIRE EN SQL !!!
+    - mettre un sondage et un système de vote pour les améliorations
+        * http://tutorialzine.com/2010/08/ajax-suggest-vote-jquery-php-mysql/
+
+EVOLUTIONS :
+    - mettre un place un système de pétition pour chaque citation (de manière à donner plus de poids)
+    - mettre un espace collaboratif (wiki) par citation pour établir un texte de manière générale (en rapport avec la citation)
+    - ajouter coté client la possibilité de voter pour une catégorie
+    - possibiliter de fermer les commentaires pour une citation (réversible)
+    - signifier qu'une citation est similaire à une autre
+    - proposer de reformuler une citation
+	- améliorer le système de commentaires (cf rue89)
+	- mettre une version du site en dev : croudquotes/dev/monprogramme2012 ?
+	- préremplir les formulaires avec les informations obtenues et enregistrées lors des précédents envois
+    
+    - mettre le projet sur github
+    - améliorer la saisie des causes quand on modère un commentaire ou une quote
+	- vérifier lors de la saisie d'une sélection que le nom n'est pas déjà pris
+    - permettre d'agrandir la zone de commentaire (cf numerama) OU mettre les textarea en autogrow
+    - permettre de paramétrer l'API en fonction des clées ou des applications (taille des textes, des pages, ...)
+    - ajouter à l'API les verifs de disponibilités des éléments uniques : noms de sélection, noms de catégories... (et l'implémenter dans le client)
+    - ajouter un mdp facultatif aux sélections
+    - ajouter la notion de tag aux citations
+
+FAIT :
+    - mettre plus en valeur la description des citations
+    - attendre 3 (ou 5) signalisations avant de les prendre en compte
+    - ajouter pages 
+        * "toutes les sélections"
+	- fonctionnalité de feedback
+    - possibilité d'ajouter une catégorie
+	- remodeler la page d'envoi des quotes
+    - faire un FAQ
+    - mettre en place les bouttons twitter et facebook sur les quotes et les sélections
+    - faire une doc de l'api
+    - faire la vérification des formulaires en js avant envoi
+        * http://www.designyourway.net/blog/resources/55-jquery-form-plugins-to-download-and-use/
+	- possibilité de mettre une quote en favoris (et créer un menu : "voire mes favoris")
+    - mettre un "nous soutenir" à la manière du "fork me" sir initializr.com
+    - ajouter des infos sur le publisher (texte dans la bdd)
+	- faire un strings.js
+    
+    
+TUTOS :
+    - http://webdesignerwall.com/tutorials/css3-dropdown-menu
+    - http://net.tutsplus.com/tutorials/html-css-techniques/how-to-create-a-drop-down-nav-menu-with-html5-css3-and-jquery/
+    - http://slodive.com/web-development/best-jquery-dropdown-menus/
+        * http://www.noupe.com/tutorial/drop-down-menu-jquery-css.html
+		
+EXEMPLES :
+	- commentaires : http://getwellsteve.com/
+    
+ 1) ***********************************************************
+One interesting strategy here is BART's: they provide a 'public' application key that everyone can use, but threaten to rate-limit or cut it off if it's abused. Then they allow you to signup for a private key too.
+
+API Best practices :
+    http://www.bserban.org/2009/02/web-api-best-practices/
+
+design inspiré de http://winfographics.com/

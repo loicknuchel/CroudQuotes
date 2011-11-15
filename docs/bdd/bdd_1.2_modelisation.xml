@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, http://code.google.com/p/wwwsqldesigner/ -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/ -->
+<sql>
+<datatypes db="mysql">
+	<group label="Numeric" color="rgb(238,238,170)">
+		<type label="Integer" length="0" sql="INTEGER" re="INT" quote=""/>
+		<type label="Decimal" length="1" sql="DECIMAL" re="DEC" quote=""/>
+		<type label="Single precision" length="0" sql="FLOAT" quote=""/>
+		<type label="Double precision" length="0" sql="DOUBLE" re="DOUBLE" quote=""/>
+	</group>
+
+	<group label="Character" color="rgb(255,200,200)">
+		<type label="Char" length="1" sql="CHAR" quote="'"/>
+		<type label="Varchar" length="1" sql="VARCHAR" quote="'"/>
+		<type label="Text" length="0" sql="MEDIUMTEXT" re="TEXT" quote="'"/>
+		<type label="Binary" length="1" sql="BINARY" quote="'"/>
+		<type label="Varbinary" length="1" sql="VARBINARY" quote="'"/>
+		<type label="BLOB" length="0" sql="BLOB" re="BLOB" quote="'"/>
+	</group>
+
+	<group label="Date &amp; Time" color="rgb(200,255,200)">
+		<type label="Date" length="0" sql="DATE" quote="'"/>
+		<type label="Time" length="0" sql="TIME" quote="'"/>
+		<type label="Datetime" length="0" sql="DATETIME" quote="'"/>
+		<type label="Year" length="0" sql="YEAR" quote=""/>
+		<type label="Timestamp" length="0" sql="TIMESTAMP" quote="'"/>
+	</group>
+	
+	<group label="Miscellaneous" color="rgb(200,200,255)">
+		<type label="ENUM" length="1" sql="ENUM" quote=""/>
+		<type label="SET" length="1" sql="SET" quote=""/>
+		<type label="Bit" length="0" sql="bit" quote=""/>
+	</group>
+</datatypes><table x="799" y="160" name="services">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="id_increment" row="service_id" />
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+</row>
+<row name="code" null="0" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+</row>
+<row name="nbUsedKey" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
+<row name="nbUsedAdminKey" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>liste des services indépendants existants</comment>
+</table>
+<table x="536" y="424" name="quote">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="vote_quote" row="quote_id" />
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="quote" null="0" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+</row>
+<row name="source" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<row name="context" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="explanation" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="author" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<row name="publisher" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<row name="publisher_info" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="mail" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<row name="site" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<row name="category" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="category" row="id" />
+</row>
+<row name="vote_up" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="vote_down" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="comments" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="reported" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="quote_state" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default><comment>0:public, 1:reported, 2:deleted</comment>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+<key type="INDEX" name="">
+<part>category</part>
+</key>
+<key type="INDEX" name="">
+<part>post_date</part>
+</key>
+</table>
+<table x="1068" y="498" name="comment">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="elt_type" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<comment>0:quote</comment>
+</row>
+<row name="elt_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="publisher" null="0" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+</row>
+<row name="mail" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<row name="site" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<row name="comment" null="0" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+</row>
+<row name="vote_up" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="vote_down" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="reported" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="comment_state" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default><comment>0:public, 1:reported, 2:deleted</comment>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+<key type="INDEX" name="">
+<part>post_date</part>
+</key>
+<key type="INDEX" name="">
+<part>elt_id</part>
+<part>elt_type</part>
+</key>
+</table>
+<table x="297" y="261" name="category">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>service_id</part>
+<part>id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>service_id</part>
+<part>name</part>
+</key>
+</table>
+<table x="277" y="408" name="category_quote">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="quote_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="quote" row="id" />
+</row>
+<row name="category_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="category" row="id" />
+</row>
+<row name="value" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
+<key type="PRIMARY" name="">
+<part>service_id</part>
+<part>post_ip</part>
+<part>quote_id</part>
+<part>category_id</part>
+</key>
+</table>
+<table x="427" y="164" name="selection_quote">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="quote_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="quote" row="id" />
+</row>
+<row name="selection_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="selection" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>service_id</part>
+<part>quote_id</part>
+<part>selection_id</part>
+</key>
+</table>
+<table x="749" y="528" name="vote_quote">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="quote_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="vote" null="0" autoincrement="0">
+<datatype>bit</datatype>
+<comment>1:up, 0:down</comment>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>service_id</part>
+<part>post_ip</part>
+<part>quote_id</part>
+<part>vote</part>
+</key>
+<key type="INDEX" name="">
+<part>quote_id</part>
+</key>
+</table>
+<table x="1315" y="539" name="vote_comment">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="comment_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="comment" row="id" />
+</row>
+<row name="vote" null="0" autoincrement="0">
+<datatype>bit</datatype>
+<comment>1:up, 0:down / bit type ???</comment>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>service_id</part>
+<part>post_ip</part>
+<part>comment_id</part>
+<part>vote</part>
+</key>
+<key type="INDEX" name="">
+<part>comment_id</part>
+</key>
+</table>
+<table x="1122" y="240" name="sqlreq_log">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+</row>
+<row name="api_log_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="api_log" row="id" />
+</row>
+<row name="request_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="request" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+</table>
+<table x="1313" y="712" name="reported_comment">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="comment_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="comment" row="id" />
+</row>
+<row name="cause" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>service_id</part>
+<part>post_ip</part>
+<part>comment_id</part>
+</key>
+<key type="INDEX" name="">
+<part>comment_id</part>
+</key>
+</table>
+<table x="749" y="710" name="reported_quote">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="quote_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="quote" row="id" />
+</row>
+<row name="cause" null="0" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>service_id</part>
+<part>post_ip</part>
+<part>quote_id</part>
+</key>
+<key type="INDEX" name="">
+<part>quote_id</part>
+</key>
+</table>
+<table x="746" y="330" name="suivi_quote">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="quote_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="quote" row="id" />
+</row>
+<row name="mail" null="1" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+<default>NULL</default></row>
+<row name="new_comments" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default><comment>0:non suivi, 1:suivi</comment>
+</row>
+<key type="PRIMARY" name="">
+<part>service_id</part>
+<part>mail</part>
+<part>quote_id</part>
+</key>
+<key type="INDEX" name="">
+<part>id</part>
+</key>
+</table>
+<table x="419" y="12" name="selection">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="post_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+<key type="UNIQUE" name="">
+<part>service_id</part>
+<part>name</part>
+</key>
+</table>
+<table x="1146" y="43" name="api_log">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+</row>
+<row name="call_ip" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="call_key" null="0" autoincrement="0">
+<datatype>VARCHAR(40)</datatype>
+</row>
+<row name="call_user_agent" null="0" autoincrement="0">
+<datatype>VARCHAR(256)</datatype>
+</row>
+<row name="call_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="call" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+</table>
+<table x="120" y="18" name="id_increment">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="id_category" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="id_quote" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="id_comment" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="id_vote_quote" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="id_vote_comment" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="id_reported_quote" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="id_reported_comment" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="id_selection" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<row name="id_suivi_quote" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>0</default></row>
+<key type="PRIMARY" name="">
+<part>service_id</part>
+</key>
+</table>
+<table x="1242" y="396" name="app_log">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+</row>
+<row name="log_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="msg" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+<part>service_id</part>
+</key>
+</table>
+<table x="885" y="18" name="info">
+<row name="bdd_1_2" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>bdd_1_2</part>
+</key>
+<comment>précise la version de la bdd</comment>
+</table>
+<table x="730" y="10" name="key_cpt">
+<row name="key" null="0" autoincrement="0">
+<datatype>VARCHAR(40)</datatype>
+</row>
+<row name="last_reset" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="cpt" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>1</default></row>
+<row name="max_cpt" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="reset_time" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>key</part>
+</key>
+</table>
+<table x="215" y="638" name="history">
+<row name="service_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="services" row="id" />
+</row>
+<row name="history_type" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<comment>0:quote.quote, 1:quote.source, 2:quote.context, 3:quote.explanation, 4:quote.author, 10:comment.comment</comment>
+</row>
+<row name="elt_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="create_date" null="0" autoincrement="0">
+<datatype>TIMESTAMP</datatype>
+<default>CURRENT_TIMESTAMP</default></row>
+<row name="content" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>service_id</part>
+<part>history_type</part>
+<part>elt_id</part>
+<part>create_date</part>
+</key>
+</table>
+</sql>

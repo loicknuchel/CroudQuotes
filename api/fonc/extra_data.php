@@ -1,0 +1,1 @@
+<?phpfunction saveExtraDatas(&$usr, $params){	$usr['noheaders'] = safe_int(isset($params["noheaders"]) ? $params["noheaders"] : null);	$usr['format'] = safe_string(isset($params["format"]) ? $params["format"] : null);	$usr['callback'] = safe_string(isset($params["callback"]) ? $params["callback"] : null);}?>

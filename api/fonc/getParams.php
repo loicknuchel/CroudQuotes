@@ -1,0 +1,1 @@
+<?php// API : params.php:GET?key={key}function apiGetParams(&$usr, $params, $server_path){	$rel = isset($server_path) ? $server_path : '../../../';	include_once $rel.'utils/json.php';	include_once 'utils/extra_data.php';		saveExtraDatas($usr, $params);		return createParamsJson($usr);}?>

@@ -1,0 +1,1 @@
+<?phpfunction commentTypeToCode($type){	if($type == 'quote'){return 1;}	else if($type == 'page'){return 2;}	else{return null;}}function codeToCommentType($code){	if($code == 1){return 'quote';}	else if($code == 2){return 'page';}	else{return null;}}function isCommentType($type){	return commentTypeToCode($type) != null;}?>
