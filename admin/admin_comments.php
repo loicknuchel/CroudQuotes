@@ -41,6 +41,17 @@
 			$html = '<tr><td>fail delete comment '.$id.' !!!!!!!</td><td><a href="'.$page.'?adminkey='.$usr['adminkey'].'">ok</a></td><td>'.$req.'</td></tr>';
 		}
 	}
+	else if(isset($_GET['ask_realdelete']) && is_numeric($_GET['ask_realdelete'])){
+		$id = (int) $_GET['ask_realdelete'];
+		$title = 'Suppression réelle en base du commentaire '.$id.' ?';
+		// rm vote_comment, reported_comment, comment et -1 sur quote 
+		
+		
+	}
+	else if(isset($_GET['realdelete']) && is_numeric($_GET['realdelete'])){
+		$id = (int) $_GET['realdelete'];
+		
+	}
 	else if(isset($_GET['causes']) && is_numeric($_GET['causes'])){
 		$id = (int) $_GET['causes'];
 		$title = 'causes for comment '.$id.'';

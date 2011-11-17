@@ -1,6 +1,6 @@
 
 /* nouvelles tables */
-INSERT INTO `newCQ_services` (`id` ,`name`, `code`, `nbUsedKey`, `nbUsedAdminKey`) VALUES 
+INSERT INTO `newCQ_service` (`id` ,`name`, `code`, `nbUsedKey`, `nbUsedAdminKey`) VALUES 
 ('1','test','test','2','1'), 
 ('2','dev','developpement','2','1'), 
 ('3','demo','demos','2','1'), 
@@ -21,21 +21,6 @@ UPDATE `newCQ_id_increment` SET `id_comment`=(SELECT `id` FROM CQps12_comment OR
 UPDATE `newCQ_id_increment` SET `id_selection`=(SELECT `id` FROM CQtest_selection ORDER BY id DESC LIMIT 1) WHERE `service_id`=1;
 UPDATE `newCQ_id_increment` SET `id_selection`=(SELECT `id` FROM CQmp2012_selection ORDER BY id DESC LIMIT 1) WHERE `service_id`=4;
 UPDATE `newCQ_id_increment` SET `id_selection`=(SELECT `id` FROM CQps12_selection ORDER BY id DESC LIMIT 1) WHERE `service_id`=5;
-UPDATE `newCQ_id_increment` SET `id_vote_quote`=(SELECT `id` FROM CQtest_vote_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=1;
-UPDATE `newCQ_id_increment` SET `id_vote_quote`=(SELECT `id` FROM CQmp2012_vote_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=4;
-UPDATE `newCQ_id_increment` SET `id_vote_quote`=(SELECT `id` FROM CQps12_vote_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=5;
-UPDATE `newCQ_id_increment` SET `id_vote_comment`=(SELECT `id` FROM CQtest_vote_comment ORDER BY id DESC LIMIT 1) WHERE `service_id`=1;
-UPDATE `newCQ_id_increment` SET `id_vote_comment`=(SELECT `id` FROM CQmp2012_vote_comment ORDER BY id DESC LIMIT 1) WHERE `service_id`=4;
-UPDATE `newCQ_id_increment` SET `id_vote_comment`=(SELECT `id` FROM CQps12_vote_comment ORDER BY id DESC LIMIT 1) WHERE `service_id`=5;
-UPDATE `newCQ_id_increment` SET `id_reported_quote`=(SELECT `id` FROM CQtest_reported_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=1;
-UPDATE `newCQ_id_increment` SET `id_reported_quote`=(SELECT `id` FROM CQmp2012_reported_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=4;
-UPDATE `newCQ_id_increment` SET `id_reported_quote`=(SELECT `id` FROM CQps12_reported_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=5;
-UPDATE `newCQ_id_increment` SET `id_reported_comment`=(SELECT `id` FROM CQtest_reported_comment ORDER BY id DESC LIMIT 1) WHERE `service_id`=1;
-UPDATE `newCQ_id_increment` SET `id_reported_comment`=(SELECT `id` FROM CQmp2012_reported_comment ORDER BY id DESC LIMIT 1) WHERE `service_id`=4;
-UPDATE `newCQ_id_increment` SET `id_reported_comment`=(SELECT `id` FROM CQps12_reported_comment ORDER BY id DESC LIMIT 1) WHERE `service_id`=5;
-UPDATE `newCQ_id_increment` SET `id_suivi_quote`=(SELECT `id` FROM CQtest_suivi_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=1;
-UPDATE `newCQ_id_increment` SET `id_suivi_quote`=(SELECT `id` FROM CQmp2012_suivi_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=4;
-UPDATE `newCQ_id_increment` SET `id_suivi_quote`=(SELECT `id` FROM CQps12_suivi_quote ORDER BY id DESC LIMIT 1) WHERE `service_id`=5;
 
 
 /* MAJ des données */
@@ -47,29 +32,27 @@ INSERT INTO `newCQ_quote` (SELECT '1', `id`, `post_ip`, `post_date`, `quote`, `s
 INSERT INTO `newCQ_quote` (SELECT '4', `id`, `post_ip`, `post_date`, `quote`, `source`, `context`, `explanation`, `author`, `publisher`, `publisher_info`, `mail`, `site`, `category`, `vote_up`, `vote_down`, `comments`, `reported`, `quote_state` FROM `CQmp2012_quote`);
 INSERT INTO `newCQ_quote` (SELECT '5', `id`, `post_ip`, `post_date`, `quote`, `source`, `context`, `explanation`, `author`, `publisher`, `publisher_info`, `mail`, `site`, `category`, `vote_up`, `vote_down`, `comments`, `reported`, `quote_state` FROM `CQps12_quote`);
 
-INSERT INTO `newCQ_comment` (SELECT '1', `id`, `post_ip`, `post_date`, '1', `quote_id`, `publisher`, `mail`, `site`, `comment`, `vote_up`, `vote_down`, `reported`, `comment_state` FROM `CQtest_comment`);
-INSERT INTO `newCQ_comment` (SELECT '4', `id`, `post_ip`, `post_date`, '1', `quote_id`, `publisher`, `mail`, `site`, `comment`, `vote_up`, `vote_down`, `reported`, `comment_state` FROM `CQmp2012_comment`);
-INSERT INTO `newCQ_comment` (SELECT '5', `id`, `post_ip`, `post_date`, '1', `quote_id`, `publisher`, `mail`, `site`, `comment`, `vote_up`, `vote_down`, `reported`, `comment_state` FROM `CQps12_comment`);
+INSERT INTO `newCQ_comment` (SELECT '1', `id`, `post_ip`, `post_date`, '2', `quote_id`, `publisher`, `mail`, `site`, `comment`, `vote_up`, `vote_down`, `reported`, `comment_state` FROM `CQtest_comment`);
+INSERT INTO `newCQ_comment` (SELECT '4', `id`, `post_ip`, `post_date`, '2', `quote_id`, `publisher`, `mail`, `site`, `comment`, `vote_up`, `vote_down`, `reported`, `comment_state` FROM `CQmp2012_comment`);
+INSERT INTO `newCQ_comment` (SELECT '5', `id`, `post_ip`, `post_date`, '2', `quote_id`, `publisher`, `mail`, `site`, `comment`, `vote_up`, `vote_down`, `reported`, `comment_state` FROM `CQps12_comment`);
 
 INSERT INTO `newCQ_selection` (SELECT '1', `id`, `post_ip`, `post_date`, `name` FROM `CQtest_selection`);
 INSERT INTO `newCQ_selection` (SELECT '4', `id`, `post_ip`, `post_date`, `name` FROM `CQmp2012_selection`);
 INSERT INTO `newCQ_selection` (SELECT '5', `id`, `post_ip`, `post_date`, `name` FROM `CQps12_selection`);
 
-INSERT INTO `newCQ_vote_quote` (SELECT '1', `id`, `post_ip`, `post_date`, `quote_id`, `vote` FROM `CQtest_vote_quote`);
-INSERT INTO `newCQ_vote_quote` (SELECT '4', `id`, `post_ip`, `post_date`, `quote_id`, `vote` FROM `CQmp2012_vote_quote`);
-INSERT INTO `newCQ_vote_quote` (SELECT '5', `id`, `post_ip`, `post_date`, `quote_id`, `vote` FROM `CQps12_vote_quote`);
+INSERT INTO `newCQ_vote` (SELECT '1', `id`, `post_ip`, `post_date`, '2', `quote_id`, `vote` FROM `CQtest_vote_quote`);
+INSERT INTO `newCQ_vote` (SELECT '4', `id`+(SELECT count(*) FROM `newCQ_vote`), `post_ip`, `post_date`, '2', `quote_id`, `vote` FROM `CQmp2012_vote_quote`);
+INSERT INTO `newCQ_vote` (SELECT '5', `id`+(SELECT count(*) FROM `newCQ_vote`), `post_ip`, `post_date`, '2', `quote_id`, `vote` FROM `CQps12_vote_quote`);
+INSERT INTO `newCQ_vote` (SELECT '1', `id`+(SELECT count(*) FROM `newCQ_vote`), `post_ip`, `post_date`, '3', `comment_id`, `vote` FROM `CQtest_vote_comment`);
+INSERT INTO `newCQ_vote` (SELECT '4', `id`+(SELECT count(*) FROM `newCQ_vote`), `post_ip`, `post_date`, '3', `comment_id`, `vote` FROM `CQmp2012_vote_comment`);
+INSERT INTO `newCQ_vote` (SELECT '5', `id`+(SELECT count(*) FROM `newCQ_vote`), `post_ip`, `post_date`, '3', `comment_id`, `vote` FROM `CQps12_vote_comment`);
 
-INSERT INTO `newCQ_vote_comment` (SELECT '1', `id`, `post_ip`, `post_date`, `comment_id`, `vote` FROM `CQtest_vote_comment`);
-INSERT INTO `newCQ_vote_comment` (SELECT '4', `id`, `post_ip`, `post_date`, `comment_id`, `vote` FROM `CQmp2012_vote_comment`);
-INSERT INTO `newCQ_vote_comment` (SELECT '5', `id`, `post_ip`, `post_date`, `comment_id`, `vote` FROM `CQps12_vote_comment`);
-
-INSERT INTO `newCQ_reported_quote` (SELECT '1', `id`, `post_ip`, `post_date`, `quote_id`, `cause` FROM `CQtest_reported_quote`);
-INSERT INTO `newCQ_reported_quote` (SELECT '4', `id`, `post_ip`, `post_date`, `quote_id`, `cause` FROM `CQmp2012_reported_quote`);
-INSERT INTO `newCQ_reported_quote` (SELECT '5', `id`, `post_ip`, `post_date`, `quote_id`, `cause` FROM `CQps12_reported_quote`);
-
-INSERT INTO `newCQ_reported_comment` (SELECT '1', `id`, `post_ip`, `post_date`, `comment_id`, `cause` FROM `CQtest_reported_comment`);
-INSERT INTO `newCQ_reported_comment` (SELECT '4', `id`, `post_ip`, `post_date`, `comment_id`, `cause` FROM `CQmp2012_reported_comment`);
-INSERT INTO `newCQ_reported_comment` (SELECT '5', `id`, `post_ip`, `post_date`, `comment_id`, `cause` FROM `CQps12_reported_comment`);
+INSERT INTO `newCQ_reported` (SELECT '1', `id`, `post_ip`, `post_date`, '2', `quote_id`, `cause` FROM `CQtest_reported_quote`);
+INSERT INTO `newCQ_reported` (SELECT '4', `id`+(SELECT count(*) FROM `newCQ_reported`), `post_ip`, `post_date`, '2', `quote_id`, `cause` FROM `CQmp2012_reported_quote`);
+INSERT INTO `newCQ_reported` (SELECT '5', `id`+(SELECT count(*) FROM `newCQ_reported`), `post_ip`, `post_date`, '2', `quote_id`, `cause` FROM `CQps12_reported_quote`);
+INSERT INTO `newCQ_reported` (SELECT '1', `id`+(SELECT count(*) FROM `newCQ_reported`), `post_ip`, `post_date`, '3', `comment_id`, `cause` FROM `CQtest_reported_comment`);
+INSERT INTO `newCQ_reported` (SELECT '4', `id`+(SELECT count(*) FROM `newCQ_reported`), `post_ip`, `post_date`, '3', `comment_id`, `cause` FROM `CQmp2012_reported_comment`);
+INSERT INTO `newCQ_reported` (SELECT '5', `id`+(SELECT count(*) FROM `newCQ_reported`), `post_ip`, `post_date`, '3', `comment_id`, `cause` FROM `CQps12_reported_comment`);
 
 INSERT INTO `newCQ_category_quote` (SELECT '1', `post_ip`, `post_date`, `quote_id`, `category_id`, `value` FROM `CQtest_category_quote`);
 INSERT INTO `newCQ_category_quote` (SELECT '4', `post_ip`, `post_date`, `quote_id`, `category_id`, `value` FROM `CQmp2012_category_quote`);
@@ -79,9 +62,9 @@ INSERT INTO `newCQ_selection_quote` (SELECT '1', `quote_id`, `selection_id` FROM
 INSERT INTO `newCQ_selection_quote` (SELECT '4', `quote_id`, `selection_id` FROM `CQmp2012_selection_quote`);
 INSERT INTO `newCQ_selection_quote` (SELECT '5', `quote_id`, `selection_id` FROM `CQps12_selection_quote`);
 
-INSERT INTO `newCQ_suivi_quote` (SELECT '1', `id`, `post_ip`, null, `quote_id`, `mail`, `new_comments` FROM `CQtest_suivi_quote`);
-INSERT INTO `newCQ_suivi_quote` (SELECT '4', `id`, `post_ip`, null, `quote_id`, `mail`, `new_comments` FROM `CQmp2012_suivi_quote`);
-INSERT INTO `newCQ_suivi_quote` (SELECT '5', `id`, `post_ip`, null, `quote_id`, `mail`, `new_comments` FROM `CQps12_suivi_quote`);
+INSERT INTO `newCQ_suivi` (SELECT '1', `id`, `post_ip`, null, '2', `quote_id`, `mail`, `new_comments` FROM `CQtest_suivi_quote`);
+INSERT INTO `newCQ_suivi` (SELECT '4', `id`, `post_ip`, null, '2', `quote_id`, `mail`, `new_comments` FROM `CQmp2012_suivi_quote`);
+INSERT INTO `newCQ_suivi` (SELECT '5', `id`, `post_ip`, null, '2', `quote_id`, `mail`, `new_comments` FROM `CQps12_suivi_quote`);
 
 INSERT INTO `newCQ_api_log` (SELECT '1', `id`, `call_ip`, `call_key`, `call_user_agent`, `call_date`, `call` FROM `CQtest_logs_api`);
 INSERT INTO `newCQ_api_log` (SELECT '4', `id`, `call_ip`, `call_key`, `call_user_agent`, `call_date`, `call` FROM `CQmp2012_logs_api`);

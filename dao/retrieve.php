@@ -4,6 +4,7 @@
 	include_once $rel.'dao/retrieveUtils.php';
 	include_once $rel.'dao/persistUtils.php';
 	include_once $rel.'globals/env.php';
+	include_once $rel.'globals/conventions.php';
 	
 	function retrieveQuote($usr, $quoteid){
 		return retrieveUniqueQuote($usr, "AND q.id=".$quoteid."");
@@ -127,17 +128,17 @@
 		return getMultipleDataRows($req, $usr);
 	}
 	
-	function retrieveSuiviQuotes($usr, $mail){
+	function retrieveEltSuivi($usr, $mail){
 		$dbVars = setDbVars();
 		
-		$req = "SELECT quote_id, new_comments FROM `".$dbVars['name']."`.`newCQ_suivi_quote` WHERE mail='".$mail."' AND service_id=".$usr['noService'].";";
+		$req = "SELECT elt_type, elt_id FROM `".$dbVars['name']."`.`newCQ_suivi` WHERE service_id=".$usr['noService']." AND mail='".$mail."' AND actif=1 ORDER BY elt_type, elt_id;";
 		return getMultipleDataRows($req, $usr);
 	}
 	
-	function retrieveNewCommentSuiviMail($usr, $quote_id){
+	function retrieveMailForEltUpdate($usr, $elt_type, $elt_id){
 		$dbVars = setDbVars();
 		
-		$req = "SELECT mail FROM `".$dbVars['name']."`.`newCQ_suivi_quote` WHERE new_comments=1 AND quote_id='".$quote_id."' AND service_id=".$usr['noService'].";";
+		$req = "SELECT mail FROM `".$dbVars['name']."`.`newCQ_suivi` WHERE service_id=".$usr['noService']." AND elt_type=".ressourceTypeToCode($elt_type)." AND elt_id='".$elt_id."' AND actif=1;";
 		return getMultipleDataRows($req, $usr);
 	}
 	

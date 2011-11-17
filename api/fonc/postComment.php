@@ -14,7 +14,7 @@ function apiNewComment(&$usr, $params, $server_path){
 	saveExtraDatas($usr, $params);
 	$quoteid = safe_int(isset($params["quoteid"]) ? $params["quoteid"] : null);
 	if($quoteid == null){
-		$type = (isset($params["type"]) && isCommentType($params["type"]))? $params["type"] : null;
+		$type = (isset($params["type"]) && isRessourceType($params["type"]))? $params["type"] : null;
 		$id = safe_int(isset($params["id"]) ? $params["id"] : null);
 	}
 	else{$type = 'quote'; $id = $quoteid;}

@@ -1,7 +1,9 @@
 
 /*
 	TODO :
-	- modifier la table comment pour pouvoir ajouter des commentaires sur autre chose que des quotes
+	- créer une table petition
+	- créer une table user, accepted_mail ou autre...
+	- dans la table newCQ_api_log, ajouter une colonne methode et une colonne params
 */
 
 DROP TABLE IF EXISTS `newCQ_history`;
@@ -9,26 +11,24 @@ DROP TABLE IF EXISTS `newCQ_key_cpt`;
 DROP TABLE IF EXISTS `newCQ_app_log`;
 DROP TABLE IF EXISTS `newCQ_sqlreq_log`;
 DROP TABLE IF EXISTS `newCQ_api_log`;
-DROP TABLE IF EXISTS `newCQ_suivi_quote`;
+DROP TABLE IF EXISTS `newCQ_suivi`;
 DROP TABLE IF EXISTS `newCQ_selection_quote`;
 DROP TABLE IF EXISTS `newCQ_category_quote`;
-DROP TABLE IF EXISTS `newCQ_reported_comment`;
-DROP TABLE IF EXISTS `newCQ_reported_quote`;
-DROP TABLE IF EXISTS `newCQ_vote_comment`;
-DROP TABLE IF EXISTS `newCQ_vote_quote`;
+DROP TABLE IF EXISTS `newCQ_reported`;
+DROP TABLE IF EXISTS `newCQ_vote`;
 DROP TABLE IF EXISTS `newCQ_selection`;
 DROP TABLE IF EXISTS `newCQ_comment`;
 DROP TABLE IF EXISTS `newCQ_quote`;
 DROP TABLE IF EXISTS `newCQ_category`;
 DROP TABLE IF EXISTS `newCQ_id_increment`;
-DROP TABLE IF EXISTS `newCQ_services`;
+DROP TABLE IF EXISTS `newCQ_service`;
 DROP TABLE IF EXISTS `newCQ_info`;
 
 CREATE TABLE `newCQ_info` (
 	`bdd_1_2` INT NOT NULL
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-CREATE TABLE `newCQ_services` (
+CREATE TABLE `newCQ_service` (
 	`id` INT NOT NULL,
 	`name` VARCHAR(256) NOT NULL,
 	`code` VARCHAR(256) NOT NULL,
@@ -42,14 +42,9 @@ CREATE TABLE `newCQ_id_increment` (
 	`id_category` INT NOT NULL default 0,
 	`id_quote` INT NOT NULL default 0,
 	`id_comment` INT NOT NULL default 0,
-	`id_vote_quote` INT NOT NULL default 0,
-	`id_vote_comment` INT NOT NULL default 0,
-	`id_reported_quote` INT NOT NULL default 0,
-	`id_reported_comment` INT NOT NULL default 0,
-	`id_selection` INT NOT NULL default 0,
-	`id_suivi_quote` INT NOT NULL default 0
+	`id_selection` INT NOT NULL default 0
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_id_increment` ADD CONSTRAINT FK_id_increment_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_id_increment` ADD CONSTRAINT FK_id_increment_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 
 CREATE TABLE `newCQ_category` (
 	`service_id` INT NOT NULL,
@@ -60,7 +55,7 @@ CREATE TABLE `newCQ_category` (
 	PRIMARY KEY (`service_id`, `id`),
 	UNIQUE (`service_id`, `name`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_category` ADD CONSTRAINT FK_category_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_category` ADD CONSTRAINT FK_category_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 
 CREATE TABLE `newCQ_quote` (
 	`service_id` INT NOT NULL,
@@ -86,7 +81,7 @@ CREATE TABLE `newCQ_quote` (
 	KEY (`category`),
 	KEY (`post_date`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_quote` ADD CONSTRAINT FK_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_quote` ADD CONSTRAINT FK_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 ALTER TABLE `newCQ_quote` ADD CONSTRAINT FK_quote_category FOREIGN KEY (`category`) REFERENCES `newCQ_category`(`id`);
 
 CREATE TABLE `newCQ_comment` (
@@ -94,7 +89,7 @@ CREATE TABLE `newCQ_comment` (
 	`id` INT NOT NULL,
 	`post_ip` INT NOT NULL,
 	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-	`elt_type` INT NOT NULL COMMENT '1:quote, 2:page',
+	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment',
 	`elt_id` INT NOT NULL,
 	`publisher` VARCHAR(256) NOT NULL,
 	`mail` VARCHAR(256) default NULL,
@@ -108,7 +103,7 @@ CREATE TABLE `newCQ_comment` (
 	KEY (`post_date`),
 	KEY (`elt_type`, `elt_id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_comment` ADD CONSTRAINT FK_comment_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_comment` ADD CONSTRAINT FK_comment_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 -- TRIGGER : quand on ajoute un commentaire, on incrémente `comments` dans la table quote
 
 CREATE TABLE `newCQ_selection` (
@@ -120,71 +115,37 @@ CREATE TABLE `newCQ_selection` (
 	PRIMARY KEY (`service_id`, `id`),
 	UNIQUE (`service_id`, `name`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_selection` ADD CONSTRAINT FK_selection_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_selection` ADD CONSTRAINT FK_selection_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 
 /* ajoute des votes aux quotes */
-CREATE TABLE `newCQ_vote_quote` (
+CREATE TABLE `newCQ_vote` (
 	`service_id` INT NOT NULL,
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`post_ip` INT NOT NULL,
 	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-	`quote_id` INT NOT NULL,
-	`vote` BINARY NOT NULL COMMENT '1:up, 0:down / bit type ???',
-	PRIMARY KEY (`service_id`, `id`),
-	UNIQUE (`service_id`, `post_ip`, `quote_id`, `vote`),
-	KEY (`quote_id`)
+	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment',
+	`elt_id` INT NOT NULL,
+	`vote` BINARY NOT NULL COMMENT '1:up, 0:down',
+	PRIMARY KEY (`service_id`, `post_ip`, `elt_type`, `elt_id`, `vote`),
+	KEY (`id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_vote_quote` ADD CONSTRAINT FK_vote_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
-ALTER TABLE `newCQ_vote_quote` ADD CONSTRAINT FK_vote_quote_id FOREIGN KEY (`quote_id`) REFERENCES `newCQ_quotes`(`id`) ON DELETE CASCADE;
--- TRIGGER : quand on ajoute un vote, on incrémente `vote_up` ou `vote_down` dans la table quote
-
-/* ajoute des votes aux comments */
-CREATE TABLE `newCQ_vote_comment` (
-	`service_id` INT NOT NULL,
-	`id` INT NOT NULL,
-	`post_ip` INT NOT NULL,
-	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-	`comment_id` INT NOT NULL,
-	`vote` BINARY NOT NULL COMMENT '1:up, 0:down / bit type ???',
-	PRIMARY KEY (`service_id`, `id`),
-	UNIQUE (`service_id`, `post_ip`, `comment_id`, `vote`),
-	KEY (`comment_id`)
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_vote_comment` ADD CONSTRAINT FK_vote_comment_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
-ALTER TABLE `newCQ_vote_comment` ADD CONSTRAINT FK_vote_comment_id FOREIGN KEY (`comment_id`) REFERENCES `newCQ_comment`(`id`) ON DELETE CASCADE;
--- TRIGGER : quand on ajoute un vote, on incrémente `vote_up` ou `vote_down` dans la table quote
+ALTER TABLE `newCQ_vote` ADD CONSTRAINT FK_vote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
+-- TRIGGER : quand on ajoute un vote, on incrémente `vote_up` ou `vote_down` dans la table quote ou comment
 
 /* ajoute des signalements aux quotes */
-CREATE TABLE `newCQ_reported_quote` (
+CREATE TABLE `newCQ_reported` (
 	`service_id` INT NOT NULL,
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`post_ip` INT NOT NULL,
 	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-	`quote_id` INT NOT NULL,
+	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment',
+	`elt_id` INT NOT NULL,
 	`cause` VARCHAR(256) default NULL,
-	PRIMARY KEY (`service_id`, `id`),
-	UNIQUE (`service_id`, `post_ip`, `quote_id`),
-	KEY (`quote_id`)
+	PRIMARY KEY (`service_id`, `post_ip`, `elt_type`, `elt_id`),
+	KEY (`id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_reported_quote` ADD CONSTRAINT FK_reported_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
-ALTER TABLE `newCQ_reported_quote` ADD CONSTRAINT FK_reported_quote_id FOREIGN KEY (`quote_id`) REFERENCES `newCQ_quotes`(`id`) ON DELETE CASCADE;
--- TRIGGER : quand on ajoute un signalement, on incrémente `reported` dans la table quote
-
-/* ajoute des signalements aux comments */
-CREATE TABLE `newCQ_reported_comment` (
-	`service_id` INT NOT NULL,
-	`id` INT NOT NULL,
-	`post_ip` INT NOT NULL,
-	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-	`comment_id` INT NOT NULL,
-	`cause` VARCHAR(256) default NULL,
-	PRIMARY KEY (`service_id`, `id`),
-	UNIQUE (`service_id`, `post_ip`, `comment_id`),
-	KEY (`comment_id`)
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_reported_comment` ADD CONSTRAINT FK_reported_comment_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
-ALTER TABLE `newCQ_reported_comment` ADD CONSTRAINT FK_reported_comment_id FOREIGN KEY (`comment_id`) REFERENCES `newCQ_comment`(`id`) ON DELETE CASCADE;
--- TRIGGER : quand on ajoute un signalement, on incrémente `reported` dans la table quote
+ALTER TABLE `newCQ_reported` ADD CONSTRAINT FK_reported_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
+-- TRIGGER : quand on ajoute un signalement, on incrémente `reported` dans la table quote ou comment
 
 /* lie les quotes avec les categories */
 CREATE TABLE `newCQ_category_quote` (
@@ -196,7 +157,7 @@ CREATE TABLE `newCQ_category_quote` (
 	`value` INT default 1,
 	PRIMARY KEY (`service_id`, `post_ip`, `quote_id`, `category_id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_category_quote` ADD CONSTRAINT FK_category_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_category_quote` ADD CONSTRAINT FK_category_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 ALTER TABLE `newCQ_category_quote` ADD CONSTRAINT FK_category_quote_id FOREIGN KEY (`quote_id`) REFERENCES `newCQ_quotes`(`id`);
 ALTER TABLE `newCQ_category_quote` ADD CONSTRAINT FK_category_category_id FOREIGN KEY (`category_id`) REFERENCES `newCQ_category`(`id`);
 
@@ -207,24 +168,24 @@ CREATE TABLE `newCQ_selection_quote` (
 	`selection_id` INT NOT NULL,
 	PRIMARY KEY (`service_id`, `quote_id`, `selection_id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_selection_quote` ADD CONSTRAINT FK_selection_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_selection_quote` ADD CONSTRAINT FK_selection_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 ALTER TABLE `newCQ_selection_quote` ADD CONSTRAINT FK_selection_quote_id FOREIGN KEY (`quote_id`) REFERENCES `newCQ_quotes`(`id`);
 ALTER TABLE `newCQ_selection_quote` ADD CONSTRAINT FK_selection_selection_id FOREIGN KEY (`selection_id`) REFERENCES `newCQ_selection`(`id`);
 
-/* lie une adresse mail à une quote pour le suivi */
-CREATE TABLE `newCQ_suivi_quote` (
+/* lie une adresse mail à un élément pour le suivre */
+CREATE TABLE `newCQ_suivi` (
 	`service_id` INT NOT NULL,
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`post_ip` INT NOT NULL,
 	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-	`quote_id` INT NOT NULL,
+	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment, 4:site',
+	`elt_id` INT NOT NULL,
 	`mail` VARCHAR(256) default NULL,
-	`new_comments` INT NOT NULL default 0 COMMENT '0:non suivi, 1:suivi',
-	PRIMARY KEY (`service_id`, `quote_id`, `mail`),
+	`actif` INT NOT NULL default 0 COMMENT '1:suivi, 2:non suivi',
+	PRIMARY KEY (`service_id`, `elt_type`, `elt_id`, `mail`),
 	KEY (`id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_suivi_quote` ADD CONSTRAINT FK_suivi_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
-ALTER TABLE `newCQ_suivi_quote` ADD CONSTRAINT FK_suivi_quote_id FOREIGN KEY (`quote_id`) REFERENCES `newCQ_quotes`(`id`);
+ALTER TABLE `newCQ_suivi` ADD CONSTRAINT FK_suivi_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 
 /* log les appels à l'API */
 CREATE TABLE `newCQ_api_log` (
@@ -237,7 +198,7 @@ CREATE TABLE `newCQ_api_log` (
 	`call` TEXT,
 	PRIMARY KEY (`service_id`, `id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_api_log` ADD CONSTRAINT FK_api_log_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_api_log` ADD CONSTRAINT FK_api_log_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 
 /* log les requêtes effectuées en base ! */
 CREATE TABLE `newCQ_sqlreq_log` (
@@ -246,9 +207,9 @@ CREATE TABLE `newCQ_sqlreq_log` (
 	`api_log_id` INT NOT NULL,
 	`request_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
 	`request` TEXT,
-	PRIMARY KEY (`service_id`, `id`)
+	PRIMARY KEY (`id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_sqlreq_log` ADD CONSTRAINT FK_sqlreq_log_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_sqlreq_log` ADD CONSTRAINT FK_sqlreq_log_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 ALTER TABLE `newCQ_sqlreq_log` ADD CONSTRAINT FK_sqlreq_log_call_id FOREIGN KEY (`api_log_id`) REFERENCES `newCQ_api_log`(`id`);
 
 /* logs de l'application */
@@ -257,9 +218,9 @@ CREATE TABLE `newCQ_app_log` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`log_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
 	`msg` TEXT,
-	PRIMARY KEY (`service_id`, `id`)
+	PRIMARY KEY (`id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_app_log` ADD CONSTRAINT FK_app_log_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_app_log` ADD CONSTRAINT FK_app_log_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 
 /* controle la fréquence d'accès des clés. Indépendant des services... */
 CREATE TABLE `newCQ_key_cpt` (
@@ -285,13 +246,14 @@ CREATE TABLE `newCQ_key_cpt` (
 /* gère l'historique de modification de certains camps */
 CREATE TABLE `newCQ_history` (
 	`service_id` INT NOT NULL,
-	`history_type` INT NOT NULL COMMENT '0:quote.quote, 1:quote.source, 2:quote.context, 3:quote.explanation, 4:quote.author, 10:comment.comment',
+	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment',
 	`elt_id` INT NOT NULL,
+	`history_field` INT NOT NULL COMMENT '10:quote.quote, 11:quote.source, 12:quote.context, 13:quote.explanation, 14:quote.author, 20:comment.comment',
 	`create_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
 	`content` TEXT,
-	PRIMARY KEY (`service_id`, `history_type`, `elt_id`, `create_date`)
+	PRIMARY KEY (`service_id`, `elt_type`, `elt_id`, `history_field`, `create_date`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `newCQ_history` ADD CONSTRAINT FK_history_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_services`(`id`);
+ALTER TABLE `newCQ_history` ADD CONSTRAINT FK_history_service_id FOREIGN KEY (`service_id`) REFERENCES `newCQ_service`(`id`);
 
 
 

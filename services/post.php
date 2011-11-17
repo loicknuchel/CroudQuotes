@@ -11,7 +11,15 @@
 	function postQuote($usr, $quote, $src, $ctx, $expl, $auth, $pub, $pubinfo, $mail, $site, $cat, &$quoteid){
 		if(is_numeric($cat)){ $cat_id = $cat; }
 		else{ $cat_id = retrieveCategoryId($usr, $cat); }
-		return persistQuote($usr, iptoint(getIp()), $quote, $src, $ctx, $expl, $auth, $pub, $pubinfo, $mail, $site, $cat_id, $quoteid);
+		$ret = persistQuote($usr, iptoint(getIp()), $quote, $src, $ctx, $expl, $auth, $pub, $pubinfo, $mail, $site, $cat_id, $quoteid);
+		
+		if($ret == 200){
+			$postInfo['publisher'] = $pub;
+			$postInfo['quote'] = $quote;
+			send_mail_notification($usr, 'site', $elt_id, $postInfo);
+		}
+		
+		return $ret;
 	}
 	
 	function postCategory($usr, $name, &$categoryid){
@@ -35,22 +43,26 @@
 	function postComment($usr, $elt_type, $elt_id, $publisher, $mail, $site, $comment, &$commentid){
 		if($elt_type == 'quote'){
 			$ret = persistQuoteComment($usr, iptoint(getIp()), $elt_id, $publisher, $mail, $site, $comment, $commentid);
-			if($ret == 200){
-				send_new_comment_mails($usr, $elt_id, $publisher, $comment);
-			}
 		}
-		else if(isCommentType($elt_type)){
-			$ret = persistComment($usr, iptoint(getIp()), commentTypeToCode($elt_type), $elt_id, $publisher, $mail, $site, $comment, $commentid);
+		else if(isRessourceType($elt_type)){
+			$ret = persistComment($usr, iptoint(getIp()), $elt_type, $elt_id, $publisher, $mail, $site, $comment, $commentid);
 		}
 		else{
 			persistFatalErrorLog($usr, "post.php : postComment() : not found elt_type ($elt_type).", true);
 			return null;
 		}
+		
+		if(($elt_type == 'quote' || $elt_type == 'page') && $ret == 200){
+			$postInfo['publisher'] = $publisher;
+			$postInfo['comment'] = $comment;
+			send_mail_notification($usr, $elt_type, $elt_id, $postInfo);
+		}
+		
 		return $ret;
 	}
 	
-	function postSuivi($usr, $mail, $quoteid, $actions){
-		return persistSuivi($usr, iptoint(getIp()), $mail, $quoteid, $actions, getTimestamp());
+	function postSuivi($usr, $mail, $type, $id, $actions){
+		return persistSuivi($usr, iptoint(getIp()), $mail, $type, $id, $actions, getTimestamp());
 	}
 	
 	function postQuoteUpVote($usr, $quoteid){

@@ -14,7 +14,7 @@
 	}
 	
 	function getComments($usr, $elt_type, $elt_id, $page, $textForReportedComments){
-		$type = commentTypeToCode($elt_type);
+		$type = ressourceTypeToCode($elt_type);
 		if($type == null){
 			persistFatalErrorLog($usr, "get.php : getComments() : not found elt_type ($elt_type).", true);
 			return null;
@@ -67,7 +67,7 @@
 	}
 	
 	function getSuivi($usr, $mail){
-		return retrieveSuiviQuotes($usr, $mail);
+		return retrieveEltSuivi($usr, $mail);
 	}
 	
 	function getTotalPages($usr){
@@ -91,7 +91,7 @@
 	}
 	
 	function getTotalCommentPages($usr, $elt_type, $elt_id){
-		$type = commentTypeToCode($elt_type);
+		$type = ressourceTypeToCode($elt_type);
 		if($type == null){
 			persistFatalErrorLog($usr, "get.php : getTotalCommentPages() : not found elt_type ($elt_type).", true);
 			return null;
