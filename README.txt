@@ -1,12 +1,11 @@
-   _____ _              _   _____            _     _ 
-  / ____| |            | | |  __ \          (_)   | |
- | (___ | |_  __ _ _ __| |_| |  | |_ __ ___  _  __| |
-  \___ \| __|/ _` | '__| __| |  | | '__/ _ \| |/ _` |
-  ____) | |_| (_| | |  | |_| |__| | | | (_) | | (_| |
- |_____/ \__|\__,_|_|   \__|_____/|_|  \___/|_|\__,_|
- 
-	StartDroid est un starter de projet Android.
-	Project from https://github.com/loicknuchel/StartDroid
-
-
-Ce projet reprend les bases du l'ancien projet StartDroid (https://github.com/loicknuchel/StartDroid_old) mais avec un meilleure architecture et séparation des fonctionnalités.
+   _____                     _  ____              _            
+  / ____|                   | |/ __ \            | |           
+ | |     _ __ ___  _   _  __| | |  | |_   _  ___ | |_  ___ ___ 
+ | |    | '__/ _ \| | | |/ _` | |  | | | | |/ _ \| __|/ _ | __|
+ | |____| | | (_) | |_| | (_| | |__| | |_| | (_) | |_|  __|__ \
+  \_____|_|  \___/ \__,_|\__,_|\___\_\\__,_|\___/ \__|\___|___/		http://patorjk.com/software/taag/ (big)
+	
+	CroudQuotes est un service backend pour le stockage de petites phrases et leur organisation collective.
+	Ce projet provient de https://github.com/loicknuchel/CroudQuotes
+	
+Ce projet est simplement un backend, ce qui signifie qu'il est utilisé en complément avec des frontend qui se connectent sur son API, comme par exemple MonProgramme2012 (https://github.com/loicknuchel/MonProgramme2012)

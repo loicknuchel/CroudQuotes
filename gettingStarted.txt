@@ -1,0 +1,15 @@
+CroudQuotes est un backend pour des services de stockage de petites phrases.
+Ce service ouvre une API (JSON) pour que différents types de clients comme par exemple le site MonProgramme2012 (https://github.com/loicknuchel/MonProgramme2012).
+
+Etapes de mise en place de ce service :
+	1) téléchargez le code source PHP et copiez le sur votre serveur
+	2) ouvrez le fichier croudquotes/docs/bdd/bdd_1.2.sql et exécutez le pour créer votre base de données (MySQL)
+	3) ouvrez le fichier croudquotes/private_datas/env-db-FALSE.php 
+		- renommez le env-db.php
+		- entrez vos données de connexion à la base de donnée
+	4) ouvrez le fichier croudquotes/private_datas/filtre_fonc-FALSE.php
+		- renommez le filtre_fonc.php
+		- codez (ou recodez) les fonctions avec un TODO qui s'y trouvent (je n'ai pas laissé les miennes pour des questions de confidentialités étant données les tâches qu'elles effectuent)
+	5) ouvrez le fichier croudquotes/services/mail.php
+		- modifiez le $sender_mail pour mettre votre adresse et éventuellement le contenu des mails
+	6) Votre service de stockage est prêt !!!

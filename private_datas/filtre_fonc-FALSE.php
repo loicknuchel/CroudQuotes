@@ -3,17 +3,17 @@
 	include_once $rel.'globals/env.php';
 	include_once $rel.'utils/getVars.php';
 
-// Vérifie qu'une clé est valide et retourne l'id du servie auquel elle correspond ou null sinon
+// TODO : Vérifie qu'une clé est valide et retourne l'id du servie auquel elle correspond ou null sinon
 function isKeyValid($key){
-	return ;
+	return 1;
 }
 
-// Vérifie qu'une clé admin est valide et retourne l'id du servie auquel elle correspond ou null sinon
+// TODO : Vérifie qu'une clé admin est valide et retourne l'id du servie auquel elle correspond ou null sinon
 function isAdminKeyValid($key){
-	return ;
+	return 1;
 }
 
-// retourne un tableau de services
+// TODO : retourne un tableau de services, peut être connecté à la bdd...
 function getServices(){
 	$services = null;
 	$services['monpremierservice']['id'] = 1;
@@ -26,22 +26,28 @@ function getServices(){
 
 // return true si le chaine de caractère $service est un nom de service, false sinon
 function isService($service){
-	return ;
+	$services = getServices();
+	return isset($services[$service]);
 }
 
 // retourne le nom du service correspondant à l'id, null sinon
 function getServiceName($id){
-	return ;
+	foreach(getServices() as $key => $value){
+		if($value['id'] == $id){
+			return $value['name'];
+		}
+	}
+	return null;
 }
 
-// private : génère une clé utilisateur
-function generateKey($service, $no){
-	return ;
+// TODO : private : génère une clé utilisateur
+function generateKey($service_code, $no){
+	return sha1("Mettre votre sel : ".$service_code.$no);
 }
 
-// private : génère une clé admin
-function generateAdminKey($service, $no){
-	return ;
+// TODO : private : génère une clé admin
+function generateAdminKey($service_code, $no){
+	return sha1("Mettre un autre sel : ".$service_code.$no);
 }
 
 ?>
