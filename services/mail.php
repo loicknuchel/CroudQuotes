@@ -34,15 +34,22 @@
 			$content = '';
 		}
 		else if($elt_type == 'site'){ // a l'ajout d'une nouvelle citation
-			$sender_name = '';
-			$subject = '';
-			$content = '';
+			$sender_name = 'Mon Programme 2012 : suivi des propositions';
+			$subject = 'Suivi deu site MonProgramme2012 : Nouvelle proposition';
+			$content = '
+			Une nouvelle proposition viens d\'être publié par '.$postInfo['publisher'].' :<br/>
+			<br/>
+			'.$postInfo['quote'].'<br/>
+			<br/>
+			Vous pouvez réagir à cette proposition <a href="http://monprogramme2012.lkws.fr/?q='.$postInfo['quoteid'].'">ici</a>.<br/>
+			<br/>
+			';
 		}
 		
-		/*
+		
 		$mails = retrieveMailForEltUpdate($usr, $elt_type, $elt_id);
 		while ($mails != null && $dest_mail = mysql_fetch_array($mails, MYSQL_ASSOC)) {
 			send_mail($sender_name, $sender_mail, $dest_mail['mail'], $subject, str_replace('DEST_MAIL', $dest_mail['mail'], $content));
-		}*/
+		}
 	}
 ?>

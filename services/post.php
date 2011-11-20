@@ -16,7 +16,8 @@
 		if($ret == 200){
 			$postInfo['publisher'] = $pub;
 			$postInfo['quote'] = $quote;
-			send_mail_notification($usr, 'site', $elt_id, $postInfo);
+			$postInfo['quoteid'] = $quoteid;
+			send_mail_notification($usr, 'site', 1, $postInfo);
 		}
 		
 		return $ret;
