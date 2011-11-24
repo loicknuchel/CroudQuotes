@@ -2,6 +2,7 @@
 	$server_link = '../';
 	$rel = $server_link;
 	$page = './admin_comments.php';
+	include_once 'delete_fonc.php';
 	include_once $server_link.'dao/connectDb.php';
 	include_once $server_link.'dao/mysqlUtils.php';
 	include_once $server_link.'filtres/filtre.php';
@@ -46,10 +47,6 @@
 		$title = 'Suppression réelle en base du commentaire '.$id.' ?';
 		// rm vote_comment, reported_comment, comment et -1 sur quote 
 		
-		
-	}
-	else if(isset($_GET['realdelete']) && is_numeric($_GET['realdelete'])){
-		$id = (int) $_GET['realdelete'];
 		
 	}
 	else if(isset($_GET['causes']) && is_numeric($_GET['causes'])){
@@ -104,7 +101,7 @@
 			while($ret = mysql_fetch_array($res, MYSQL_ASSOC)){
 				$html .= '<tr>
 					<td>'.$ret['id'].'</td>
-					<td>'.codeToCommentType($ret['elt_type']).'</td>
+					<td>'.codeToRessourceType($ret['elt_type']).'</td>
 					<td>'.$ret['elt_id'].'</td>
 					<td>'.utf8_encode($ret['publisher']).'</td>
 					<td>'.utf8_encode($ret['mail']).'</td>
@@ -137,6 +134,44 @@
 		}
 	}
 	
+	
+	
+	$RealDeleteComment = '';
+	if(isset($_GET['realdelete']) && is_numeric($_GET['realdelete'])){
+		$id = (int) $_GET['realdelete'];
+		$req = 'SELECT * FROM newcq_comment WHERE `service_id`='.$usr['noService'].' AND id='.$id.' LIMIT 1;';
+		$res = query($req, $usr);
+		if($res != null && mysql_num_rows($res) != 0){
+			$ret = mysql_fetch_array($res, MYSQL_ASSOC);
+			$RealDeleteComment = "Suppression du commentaire ".$id." ? 
+			<a href=\"".$page."?adminkey=".$usr['adminkey']."&realdeleteok=".$id."\">Oui, supprimer !</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+			<a href=\"".$page."?adminkey=".$usr['adminkey']."\">Non, ne pas supprimer !</a><br/>
+			Service: ".$ret['service_id']."<br/>
+			".codeToRessourceType($ret['elt_type'])." no ".$ret['elt_id']."<br/>
+			publisher: ".$ret['publisher']." / mail: ".$ret['mail']."<br/>
+			Content: <b>".$ret['comment']."</b><br/>
+			Votes: ".$ret['vote_up']." up et ".$ret['vote_down']." down<br/>
+			Reported ".$ret['reported']." fois. Etat: ".$ret['comment_state']."<br/>
+			<br/>
+			Requêtes a effectuer en cas de suppression :<br/>
+			".realDeleteComment($usr, $id, $page, false)."
+			";
+		}
+		else{
+			$RealDeleteComment = "Le commentaire ".$id." n'a pas été trouvé !!!<br/>";
+		}
+	}
+	else if(isset($_GET['realdeleteok']) && is_numeric($_GET['realdeleteok'])){
+		$id = (int) $_GET['realdeleteok'];
+		$res = realDeleteComment($usr, $id, $page, true);
+		if($res != ''){
+			$RealDeleteComment = 'Commentaire no '.$id.' supprimé !!!<br/>Requêtes effectuées :<br/>'.$res.'<a href="'.$page.'?adminkey='.$usr['adminkey'].'">OK</a><br/>';
+		}
+		else{
+			$RealDeleteComment = "Le commentaire ".$id." n'a pas été trouvé !!!<br/>";
+		}
+	}
+	
 	unset($req);
 	dbDisconnect();
 ?>
@@ -164,7 +199,15 @@
 	<?php
 		echo 'Service : '.$usr['noService'].'. '.getServiceName($usr['noService']).'<br/>';
 		if(isset($title)){echo '<h1>'.$title.'</h1>';}
-		echo '<table>'.$html.'</table>';
+		echo '<table>'.$html.'</table>
+		<br/>
+		Real delete comment : <form method="GET">
+			<input type="hidden" name="adminkey" value="'.$usr['adminkey'].'" />
+			<input type="text" name="realdelete" placeholder="Comment Id" />
+			<input type="submit" value="delete !" />
+		</form>
+		'.$RealDeleteComment.'
+		<br/>';
 	?>
 	<a href="./?adminkey=<?php echo $_GET['adminkey']; ?>"><= retour index</a>
 </body>

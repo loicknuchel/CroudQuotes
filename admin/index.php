@@ -6,7 +6,14 @@
 		include_once $rel.'globals/conventions.php';
 		
 		$id = isAdminKeyValid($_GET['adminkey']);
-		if($id != null){ // adminkey test : '02fe37cdf3cc8a13cc7d4b4b5fc7bf8de18a8302';
+		if($id != null){ 
+			/* 
+			adminkey test   : '02fe37cdf3cc8a13cc7d4b4b5fc7bf8de18a8302';
+			adminkey mp2012 : '993c7205f72832485d584cf4ab5e8c13e6fb959e';
+			adminkey ps12   : '19fe89e3154c97d3a407b0526ebbe405bd7f669c';
+			adminkey dev    : '2ac11d311674494438d7cd99af95e0dd54e2fb77';
+			adminkey demo   : '2ab0e7845e3d1c0c87bd7a8bc1151948d0131deb';
+			*/
 			$links = 'Service : '.$id.'. '.getServiceName($id).'<br/>
 			<br/>
 			Accéder à la <a href="generate.php?adminkey='.$_GET['adminkey'].'">génération de clés</a><br/>

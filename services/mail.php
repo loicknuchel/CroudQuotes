@@ -47,9 +47,9 @@
 		}
 		
 		
-		$mails = retrieveMailForEltUpdate($usr, $elt_type, $elt_id);
+		/*$mails = retrieveMailForEltUpdate($usr, $elt_type, $elt_id);
 		while ($mails != null && $dest_mail = mysql_fetch_array($mails, MYSQL_ASSOC)) {
 			send_mail($sender_name, $sender_mail, $dest_mail['mail'], $subject, str_replace('DEST_MAIL', $dest_mail['mail'], $content));
-		}
+		}*/
 	}
 ?>
