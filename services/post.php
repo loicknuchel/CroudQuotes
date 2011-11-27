@@ -62,8 +62,8 @@
 		return $ret;
 	}
 	
-	function postSuivi($usr, $mail, $type, $id, $actions){
-		return persistSuivi($usr, iptoint(getIp()), $mail, $type, $id, $actions, getTimestamp());
+	function postSuivi($usr, $mail, $name, $info, $type, $id, $actions){
+		return persistSuivi($usr, iptoint(getIp()), $mail, $name, $info, $type, $id, $actions);
 	}
 	
 	function postQuoteUpVote($usr, $quoteid){

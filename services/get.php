@@ -66,8 +66,12 @@
 		return retrieveSelections($usr, $page);
 	}
 	
-	function getSuivi($usr, $mail){
-		return retrieveEltSuivi($usr, $mail);
+	function getMailSuivi($usr, $mail){
+		return retrieveSuiviByMail($usr, $mail);
+	}
+	
+	function getRessourceSuivi($usr, $elt_type, $id){
+		return retrieveSuiviForRessource($usr, $elt_type, $id);
 	}
 	
 	function getTotalPages($usr){
