@@ -12,10 +12,10 @@
 		}
 		else{
 			// on selectionne la base
-			if(!mysql_select_db($dbVars['name'],$db)){
+			if(!mysql_select_db($dbVars['DbName'],$db)){
 				echo '<h1>Erreur de selection de la base</h1>';
 				exit;
-			}	
+			}
 		}
 		
 		return $db;
