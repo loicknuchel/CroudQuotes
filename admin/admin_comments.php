@@ -139,7 +139,7 @@
 	$RealDeleteComment = '';
 	if(isset($_GET['realdelete']) && is_numeric($_GET['realdelete'])){
 		$id = (int) $_GET['realdelete'];
-		$req = 'SELECT * FROM newcq_comment WHERE `service_id`='.$usr['noService'].' AND id='.$id.' LIMIT 1;';
+		$req = 'SELECT * FROM newCQ_comment WHERE `service_id`='.$usr['noService'].' AND id='.$id.' LIMIT 1;';
 		$res = query($req, $usr);
 		if($res != null && mysql_num_rows($res) != 0){
 			$ret = mysql_fetch_array($res, MYSQL_ASSOC);
