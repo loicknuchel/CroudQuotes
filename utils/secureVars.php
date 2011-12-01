@@ -1,10 +1,11 @@
 <?php
 
 include_once $rel.'dao/connectDb.php';
+include_once $rel.'globals/env.php';
 
 function safe_string($entree){
 	if(isset($entree) == 1){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		dbConnect();
 		$entree = mysql_real_escape_string($entree);
 		dbDisconnect();
@@ -37,7 +38,7 @@ function safe_float($entree){
 }
 
 function safe_print($entree){
-	$dbVars = setDbVars();
+	$dbVars = setDbVars(getStatus());
 	dbConnect();
 	$ret = mysql_real_escape_string($entree);
 	dbDisconnect();

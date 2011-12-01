@@ -5,6 +5,7 @@
 	include_once $rel.'services/mail.php';
 	include_once $rel.'utils/getVars.php';
 	include_once $rel.'utils/convertVars.php';
+	include_once $rel.'utils/generateVars.php';
 	include_once $rel.'globals/env.php';
 	include_once $rel.'globals/conventions.php';
 	
@@ -90,12 +91,23 @@
 		return persistReport($usr, iptoint(getIp()), "comment", $quoteid, $cause, $deleted);
 	}
 	
+	function postSignPetition($usr, $type, $id, $mail, $prenom, $nom, $genre, $site, $profession, $zipcode, $message){
+		$confirmCode = sha1("Petition".$mail.";Sign".$type.$id.generateRandomString(15));
+		$ret = persistSignPetition($usr, iptoint(getIp()), $type, $id, $mail, $prenom, $nom, $genre, $site, $profession, $zipcode, $message, $confirmCode);
+		// envoyer mail confirmation !!!
+		return $ret;
+	}
+	
+	function postValidPetition($usr, $confirmCode){
+		return persistValidPetition($usr, $confirmCode);
+	}
+	
 	function postApiLogs($usr, $user_agent, $call, &$logid){
 		return persistApiLogs($usr, iptoint(getIp()), $user_agent, $call, $logid);
 	}
 	
-	function postCreateKeyCptCount($usr){
-		return persistCreateKeyCpt($usr, getTimestamp());
+	function postCreateKeyCptCount($usr, $type){
+		return persistCreateKeyCpt($usr, $type, getTimestamp());
 	}
 	
 	function postResetKeyCpt($usr){

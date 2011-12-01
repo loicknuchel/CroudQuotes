@@ -1,11 +1,11 @@
 
 /*
 	TODO :
-	- créer une table petition
 	- créer une table user, accepted_mail ou autre...
 	- dans la table CQ1_3_api_log, ajouter une colonne methode et une colonne params
 */
 
+DROP TABLE IF EXISTS `CQ1_3_petition`;
 DROP TABLE IF EXISTS `CQ1_3_key_cpt`;
 DROP TABLE IF EXISTS `CQ1_3_app_log`;
 DROP TABLE IF EXISTS `CQ1_3_sqlreq_log`;
@@ -76,6 +76,7 @@ CREATE TABLE `CQ1_3_quote` (
 	`vote_up` INT NOT NULL default 0,
 	`vote_down` INT NOT NULL default 0,
 	`comments` INT NOT NULL default 0,
+	`signatures` INT NOT NULL default 0,
 	`reported` INT NOT NULL default 0,
 	`quote_state` INT NOT NULL default 0 COMMENT '0:public, 1:reported, 2:deleted',
 	PRIMARY KEY (`service_id`, `id`),
@@ -239,7 +240,7 @@ ALTER TABLE `CQ1_3_app_log` ADD CONSTRAINT FK_app_log_service_id FOREIGN KEY (`s
 CREATE TABLE `CQ1_3_key_cpt` (
 	`service_id` INT default NULL,
 	`no` INT default NULL,
-	`type` VARCHAR(5) default NULL,
+	`type` VARCHAR(5) default NULL COMMENT 'user or admin',
 	`create_date` timestamp default CURRENT_TIMESTAMP,
 	`key` VARCHAR(40) NOT NULL,
 	`last_reset` INT NOT NULL COMMENT 'last reset timestamp',
@@ -257,7 +258,31 @@ CREATE TABLE `CQ1_3_key_cpt` (
 ************************** */
 
 
-
+/* permet de signer pour un élément */
+CREATE TABLE `CQ1_3_petition` (
+	`service_id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`sign_no` INT NOT NULL,
+	`post_ip` INT NOT NULL,
+	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`elt_type` INT NOT NULL COMMENT '2:quote, 4:site',
+	`elt_id` INT NOT NULL,
+	`genre` INT default NULL COMMENT '1:Mr, 2:Mme, 3:Mlle',
+	`prenom` VARCHAR(256) NOT NULL,
+	`nom` VARCHAR(256) NOT NULL,
+	`mail` VARCHAR(256) NOT NULL,
+	`site` VARCHAR(256) default NULL,
+	`profession` VARCHAR(256) default NULL,
+	`code_postal` VARCHAR(10) default NULL,
+	`message` VARCHAR(256) default NULL,
+	`etat` INT NOT NULL default 1 COMMENT '1:non validé, 2:validé, 3:supprimé',
+	`validation_key` VARCHAR(40) NOT NULL,
+	PRIMARY KEY (`service_id`, `id`),
+	UNIQUE (`service_id`, `elt_type`, `elt_id`, `mail`),
+	KEY (`sign_no`),
+	KEY (`mail`)
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+/* autres infos : adresse postale, ville, pays, entreprise/association, nationnalité */
 
 
 

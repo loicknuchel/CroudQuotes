@@ -74,6 +74,15 @@
 		return retrieveSuiviForRessource($usr, $elt_type, $id);
 	}
 	
+	function getPetition($usr, $elt_type, $elt_id, $page){
+		$type = ressourceTypeToCode($elt_type);
+		if($type == null){
+			persistFatalErrorLog($usr, "get.php : getPetition() : not found elt_type ($elt_type).", true);
+			return null;
+		}
+		return retrievePetition($usr, $type, $elt_id, $page);
+	}
+	
 	function getTotalPages($usr){
 		return retrieveTotalPages($usr);
 	}
@@ -101,6 +110,15 @@
 			return null;
 		}
 		return retrieveTotalCommentPages($usr, $type, $elt_id);
+	}
+	
+	function getTotalPetitionPages($usr, $elt_type, $elt_id){
+		$type = ressourceTypeToCode($elt_type);
+		if($type == null){
+			persistFatalErrorLog($usr, "get.php : getTotalPetitionPages() : not found elt_type ($elt_type).", true);
+			return null;
+		}
+		return retrieveTotalPetitionPages($usr, $type, $elt_id);
 	}
 	
 	function getTotalCategoriesPages($usr){

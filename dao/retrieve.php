@@ -16,7 +16,7 @@
 	
 	// private 
 	function retrieveUniqueQuote($usr, $select){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments 
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id
 		WHERE q.service_id=".$usr['noService']." AND quote_state=0
@@ -52,7 +52,7 @@
 	}
 	
 	function retrieveSelectionQuotes($usr, $sel_id, $page){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		return retrieveMultipleQuotes($usr, $page, "AND sq.selection_id='".$sel_id."' ORDER BY q.post_date DESC" , "LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` sq on q.id=sq.quote_id AND q.service_id=sq.service_id");
 	}
 	
@@ -62,7 +62,7 @@
 	
 	// private
 	function retrieveMultipleQuotes($usr, $page, $select, $join = ""){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments 
@@ -74,7 +74,7 @@
 	}
 	
 	/*function retrieveLastCommentQuotes($usr, $page){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments 
@@ -88,7 +88,7 @@
 	}*/
 		
 	function retrieveComments($usr, $elt_type, $elt_id, $page, $textForReportedComments){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT `id`, ".format_date('`post_date`').", `publisher`, `site`, IF(`comment_state` = 0, `comment`, '".$textForReportedComments."') AS `comment`, `vote_up`, `vote_down`, IF(`comment_state` = 0, 0, 1) AS `reported`
@@ -101,7 +101,7 @@
 	}
 	
 	function retrieveCategories($usr, $page){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT `id`, ".format_date('`post_date`').", `name`
@@ -114,7 +114,7 @@
 	}
 	
 	function retrieveSelections($usr, $page){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT DISTINCT s.`id`, ".format_date('s.`post_date`').", s.`name`
@@ -129,21 +129,34 @@
 	}
 	
 	function retrieveSuiviByMail($usr, $mail){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		
 		$req = "SELECT elt_type, elt_id FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."suivi` WHERE service_id=".$usr['noService']." AND mail='".$mail."' AND actif=1 ORDER BY elt_type, elt_id;";
 		return getMultipleDataRows($req, $usr);
 	}
 	
 	function retrieveSuiviForRessource($usr, $elt_type, $elt_id){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		
 		$req = "SELECT mail, name, info FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."suivi` WHERE service_id=".$usr['noService']." AND elt_type=".ressourceTypeToCode($elt_type)." AND elt_id='".$elt_id."' AND actif=1 ORDER BY post_date;";
 		return getMultipleDataRows($req, $usr);
 	}
+		
+	function retrievePetition($usr, $type, $elt_id, $page){
+		$dbVars = setDbVars(getStatus());
+		$env = setEnv();
+		
+		$req = "SELECT `sign_no`, ".format_date('`post_date`').", `genre`, `prenom`, `nom`, `site`, `profession`, `code_postal`, `message`
+		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."petition` 
+		WHERE `service_id`=".$usr['noService']." AND `elt_type`=".$type." AND `elt_id`=".$elt_id." AND `etat`=2
+		ORDER BY `sign_no` DESC 
+		LIMIT ".($page-1)*$env['petitionPageSize'].", ".$env['petitionPageSize'].";";
+		
+		return getMultipleDataRows($req, $usr);
+	}
 	
 	function retrieveTotalPages($usr){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` WHERE quote_state=0 AND service_id=".$usr['noService'].";";
@@ -151,7 +164,7 @@
 	}
 	
 	function retrieveCategoryTotalPages($usr, $cat_id){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` WHERE quote_state=0 AND service_id=".$usr['noService']." AND category='".$cat_id."';";
@@ -159,7 +172,7 @@
 	}
 	
 	function retrieveSelectionTotalPages($usr, $sel_id){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT count(*) as pages 
@@ -169,23 +182,31 @@
 	}
 	
 	function retrieveAuthorTotalPages($usr, $auth){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` WHERE quote_state=0 AND service_id=".$usr['noService']." AND author='".$auth."';";
 		return retrieveCountPages($usr, $req, $env['quotePageSize']);
 	}
 	
-	function retrieveTotalCommentPages($usr, $elt_type, $elt_id){
-		$dbVars = setDbVars();
+	function retrieveTotalCommentPages($usr, $type, $elt_id){
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
-		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` WHERE service_id=".$usr['noService']." AND elt_type=".$elt_type." AND elt_id=".$elt_id.";";
+		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` WHERE service_id=".$usr['noService']." AND elt_type=".$type." AND elt_id=".$elt_id.";";
+		return retrieveCountPages($usr, $req, $env['commentPageSize']);
+	}
+	
+	function retrieveTotalPetitionPages($usr, $type, $elt_id){
+		$dbVars = setDbVars(getStatus());
+		$env = setEnv();
+		
+		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."petition` WHERE service_id=".$usr['noService']." AND elt_type=".$type." AND elt_id=".$elt_id.";";
 		return retrieveCountPages($usr, $req, $env['commentPageSize']);
 	}
 	
 	function retrieveTotalCategoriesPages($usr){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` WHERE service_id=".$usr['noService'].";";
@@ -193,7 +214,7 @@
 	}
 	
 	function retrieveTotalSelectionsPages($usr){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection` WHERE service_id=".$usr['noService'].";";
@@ -201,42 +222,42 @@
 	}
 	
 	function retrieveKeyCptCount($usr){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		
 		$req = "SELECT `last_reset`, `cpt`, `max_cpt`, `reset_time` FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."key_cpt` WHERE `key`='".$usr['key']."' LIMIT 1;";
 		return getUniqueDataRow($req, $usr);
 	}
 	
 	function retrieveCategoryId($usr, $category_name){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		
 		$req = "SELECT id FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` WHERE service_id=".$usr['noService']." AND name='".$category_name."' LIMIT 1;";
 		return getSingleData($usr, $req, 'id');
 	}
 	
 	function retrieveCategoryName($usr, $category_id){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		
 		$req = "SELECT name FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` WHERE service_id=".$usr['noService']." AND id='".$category_id."' LIMIT 1;";
 		return getSingleData($usr, $req, 'name');
 	}
 	
 	function retrieveSelectionId($usr, $sel){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		
 		$req = "SELECT id FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection` WHERE service_id=".$usr['noService']." AND name='".$sel."' LIMIT 1;";
 		return getSingleData($usr, $req, 'id');
 	}
 	
 	function retrieveSelectionName($usr, $sel_id){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		
 		$req = "SELECT name FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection` WHERE service_id=".$usr['noService']." AND id='".$sel_id."' LIMIT 1;";
 		return getSingleData($usr, $req, 'name');
 	}
 	
 	function retrieveNewId($usr, $tableName){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$fieldName = str_replace("newCQ", "id", $tableName);
 		$req = "SELECT `".$fieldName."` FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."id_increment` WHERE `service_id`='".$usr['noService']."';";
 		$newId = getSingleData($usr, $req, $fieldName, 0);
@@ -254,7 +275,7 @@
 	}
 	
 	function retrieveLastId($usr, $tableName){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$fieldName = str_replace("newCQ", "id", $tableName);
 		
 		$req = "SELECT `".$fieldName."` FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."id_increment` WHERE service_id=".$usr['noService'].";";
@@ -262,7 +283,7 @@
 	}
 	
 	function retireveIsCorrectDbVersion($usr){
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		dbConnect();
 		
 		$env = setEnv();

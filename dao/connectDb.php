@@ -1,9 +1,10 @@
 <?php
+	include_once $rel.'globals/env.php';
 	include_once $rel.'private_datas/env-db.php';
 
 	function dbConnect(){
 		// on se connecte à MySQL
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		$db = mysql_connect($dbVars['host'], $dbVars['username'], $dbVars['password']);
 		
 		if(!$db){
