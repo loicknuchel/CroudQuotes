@@ -94,7 +94,7 @@
 	function postSignPetition($usr, $type, $id, $mail, $prenom, $nom, $genre, $site, $profession, $zipcode, $message){
 		$confirmCode = sha1("Petition".$mail.";Sign".$type.$id.generateRandomString(15));
 		$ret = persistSignPetition($usr, iptoint(getIp()), $type, $id, $mail, $prenom, $nom, $genre, $site, $profession, $zipcode, $message, $confirmCode);
-		// envoyer mail confirmation !!!
+		send_petition_confirm($usr, $type, $id, $mail, $confirmCode);
 		return $ret;
 	}
 	

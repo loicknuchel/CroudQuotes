@@ -17,7 +17,7 @@
 	// private 
 	function retrieveUniqueQuote($usr, $select){
 		$dbVars = setDbVars(getStatus());
-		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments 
+		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id
 		WHERE q.service_id=".$usr['noService']." AND quote_state=0
 		".$select."
@@ -65,7 +65,7 @@
 		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
-		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments 
+		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id ".$join."
 		WHERE q.quote_state=0 AND q.service_id=".$usr['noService']." ".$select."";
 		if($page != -1){$req .= " LIMIT ".($page-1)*$env['quotePageSize'].", ".$env['quotePageSize'].";";}
@@ -77,7 +77,7 @@
 		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
-		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments 
+		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q 
 			LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id
 		WHERE q.quote_state=0 AND q.service_id=".$usr['noService']."
