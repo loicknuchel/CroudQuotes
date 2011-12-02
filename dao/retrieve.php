@@ -201,8 +201,8 @@
 		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
-		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."petition` WHERE service_id=".$usr['noService']." AND elt_type=".$type." AND elt_id=".$elt_id.";";
-		return retrieveCountPages($usr, $req, $env['commentPageSize']);
+		$req = "SELECT count(*) as pages FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."petition` WHERE service_id=".$usr['noService']." AND elt_type=".$type." AND elt_id=".$elt_id." AND etat=2;";
+		return retrieveCountPages($usr, $req, $env['petitionPageSize']);
 	}
 	
 	function retrieveTotalCategoriesPages($usr){
