@@ -273,6 +273,7 @@ CREATE TABLE `CQ1_3_petition` (
 	`nom` VARCHAR(256) NOT NULL,
 	`mail` VARCHAR(256) NOT NULL,
 	`site` VARCHAR(256) default NULL,
+	`age` INT default NULL COMMENT '1:0-18, 2:18-25, 3:25-50, 4:>50',
 	`profession` VARCHAR(256) default NULL,
 	`code_postal` VARCHAR(10) default NULL,
 	`message` VARCHAR(256) default NULL,

@@ -146,7 +146,7 @@
 		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
-		$req = "SELECT `sign_no`, ".format_date('`post_date`').", `genre`, `prenom`, `nom`, `site`, `profession`, `code_postal`, `message`
+		$req = "SELECT `sign_no`, ".format_date('`post_date`').", `genre`, `prenom`, `nom`, `site`, `age`, `profession`, `code_postal`, `message`
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."petition` 
 		WHERE `service_id`=".$usr['noService']." AND `elt_type`=".$type." AND `elt_id`=".$elt_id." AND `etat`=2
 		ORDER BY `sign_no` DESC 

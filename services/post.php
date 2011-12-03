@@ -91,9 +91,9 @@
 		return persistReport($usr, iptoint(getIp()), "comment", $quoteid, $cause, $deleted);
 	}
 	
-	function postSignPetition($usr, $type, $id, $mail, $prenom, $nom, $genre, $site, $profession, $zipcode, $message){
+	function postSignPetition($usr, $type, $id, $mail, $prenom, $nom, $genre, $i_age, $site, $profession, $zipcode, $message){
 		$confirmCode = sha1("Petition".$mail.";Sign".$type.$id.generateRandomString(15));
-		$ret = persistSignPetition($usr, iptoint(getIp()), $type, $id, $mail, $prenom, $nom, $genre, $site, $profession, $zipcode, $message, $confirmCode);
+		$ret = persistSignPetition($usr, iptoint(getIp()), $type, $id, $mail, $prenom, $nom, $genre, $i_age, $site, $profession, $zipcode, $message, $confirmCode);
 		send_petition_confirm($usr, $type, $id, $mail, $confirmCode);
 		return $ret;
 	}
