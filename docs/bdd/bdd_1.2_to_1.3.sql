@@ -6,7 +6,7 @@ INSERT INTO `CQ1_3_service` 		(SELECT `id`, `name`, `code`, `nbUsedKey`, `nbUsed
 INSERT INTO `CQ1_3_id_increment` 	(SELECT `service_id`, `id_category`, `id_quote`, `id_comment`, `id_selection` FROM `newCQ_id_increment`);
 INSERT INTO `CQ1_3_category` 		(SELECT `service_id`, `id`, `post_ip`, `post_date`, `name` FROM `newCQ_category`);
 INSERT INTO `CQ1_3_quote` 			(SELECT `service_id`, `id`, `post_ip`, `post_date`, `quote`, `source`, `context`, `explanation`, `author`, `publisher`, `publisher_info`, `mail`, `site`, `category`, `vote_up`, `vote_down`, `comments`, '0', `reported`, `quote_state` FROM `newCQ_quote`);
-INSERT INTO `CQ1_3_comment` 		(SELECT `service_id`, `id`, `post_ip`, `post_date`, `elt_type`, `elt_id`, `publisher`, `mail`, `site`, `comment`, `vote_up`, `vote_down`, `reported`, `comment_state` FROM `newCQ_comment`);
+INSERT INTO `CQ1_3_comment` 		(SELECT `service_id`, `id`, `post_ip`, `post_date`, `elt_type`, `elt_id`, '0', `publisher`, `mail`, `site`, `comment`, `vote_up`, `vote_down`, `reported`, `comment_state` FROM `newCQ_comment`);
 INSERT INTO `CQ1_3_history` 		(SELECT `service_id`, `elt_type`, `elt_id`, `history_field`, `create_date`, `content` FROM `newCQ_history`);
 INSERT INTO `CQ1_3_selection` 		(SELECT `service_id`, `id`, `post_ip`, `post_date`, `name` FROM `newCQ_selection`);
 INSERT INTO `CQ1_3_vote` 			(SELECT `service_id`, `id`, `post_ip`, `post_date`, `elt_type`, `elt_id`, `vote` FROM `newCQ_vote`);

@@ -22,9 +22,10 @@ function apiNewComment(&$usr, $params, $server_path){
 	$comment    = string_max_lenght( safe_string(isset($params["comment"]) ? $params["comment"] : null), $env['commentMaxSize']  );
 	$mail       = string_max_lenght( safe_string(isset($params["mail"])    ? $params["mail"]    : null), $env['mailMaxSize']     );
 	$site       = string_max_lenght( safe_string(isset($params["site"])    ? $params["site"]    : null), $env['siteMaxSize']     );
+	$i_avis     = avisToCode(isset($params["avis"]) ? $params["avis"] : null);
 	
 	if($type != null && $id != null && $publisher != null && $comment != null){
-		$ret = postComment($usr, $type, $id, $publisher, $mail, $site, $comment, $commentid);
+		$ret = postComment($usr, $type, $id, $i_avis, $publisher, $mail, $site, $comment, $commentid);
 		if($ret == 200){
 			return createInsertSuccessJson($usr, $commentid);
 		} else{ return createErrorJson($usr, $ret); }

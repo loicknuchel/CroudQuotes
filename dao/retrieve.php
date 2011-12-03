@@ -26,15 +26,15 @@
 	}
 	
 	function retrieveTopQuotes($usr, $page){
-		return retrieveMultipleQuotes($usr, $page, "ORDER BY q.vote_up-q.vote_down DESC, q.comments DESC, q.vote_up DESC, q.post_date DESC");
+		return retrieveMultipleQuotes($usr, $page, "ORDER BY q.vote_up-q.vote_down DESC, q.comments DESC, q.vote_up DESC, post_timestamp DESC");
 	}
 	
 	function retrieveTopCommentQuotes($usr, $page){
-		return retrieveMultipleQuotes($usr, $page, "ORDER BY q.comments DESC, q.vote_up-q.vote_down DESC, q.vote_up DESC, q.post_date DESC");
+		return retrieveMultipleQuotes($usr, $page, "ORDER BY q.comments DESC, q.vote_up-q.vote_down DESC, q.vote_up DESC, post_timestamp DESC");
 	}
 	
 	function retrieveLastsQuotes($usr, $page){
-		return retrieveMultipleQuotes($usr, $page, "ORDER BY q.post_date DESC");
+		return retrieveMultipleQuotes($usr, $page, "ORDER BY post_timestamp DESC");
 	}
 	
 	function retrieveCustomQuoteList($usr, $tabid){
@@ -44,20 +44,20 @@
 			else{ $ids .= ' OR q.id='.$value.'';}
 		}
 		
-		return retrieveMultipleQuotes($usr, -1, "AND (".$ids.") ORDER BY q.post_date DESC, q.id DESC;");
+		return retrieveMultipleQuotes($usr, -1, "AND (".$ids.") ORDER BY post_timestamp DESC, q.id DESC;");
 	}
 	
 	function retrieveCategoryQuotes($usr, $cat_id, $page){
-		return retrieveMultipleQuotes($usr, $page, "AND q.category='".$cat_id."' ORDER BY q.post_date DESC");
+		return retrieveMultipleQuotes($usr, $page, "AND q.category='".$cat_id."' ORDER BY post_timestamp DESC");
 	}
 	
 	function retrieveSelectionQuotes($usr, $sel_id, $page){
 		$dbVars = setDbVars(getStatus());
-		return retrieveMultipleQuotes($usr, $page, "AND sq.selection_id='".$sel_id."' ORDER BY q.post_date DESC" , "LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` sq on q.id=sq.quote_id AND q.service_id=sq.service_id");
+		return retrieveMultipleQuotes($usr, $page, "AND sq.selection_id='".$sel_id."' ORDER BY post_timestamp DESC" , "LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` sq on q.id=sq.quote_id AND q.service_id=sq.service_id");
 	}
 	
 	function retrieveAuthorQuotes($usr, $auth, $page){
-		return retrieveMultipleQuotes($usr, $page, "AND q.author='".$auth."' ORDER BY q.post_date DESC");
+		return retrieveMultipleQuotes($usr, $page, "AND q.author='".$auth."' ORDER BY post_timestamp DESC");
 	}
 	
 	// private
@@ -81,22 +81,21 @@
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q 
 			LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id
 		WHERE q.quote_state=0 AND q.service_id=".$usr['noService']."
-		ORDER BY q.comments DESC, q.vote_up-q.vote_down DESC, q.vote_up DESC, q.post_date DESC 
+		ORDER BY q.comments DESC, q.vote_up-q.vote_down DESC, q.vote_up DESC, post_timestamp DESC 
 		LIMIT ".($page-1)*$env['quotePageSize'].", ".$env['quotePageSize'].";";
 		
 		return getMultipleDataRows($req, $usr);
 	}*/
 		
-	function retrieveComments($usr, $elt_type, $elt_id, $page, $textForReportedComments){
+	function retrieveComments($usr, $i_type, $elt_id, $page, $textForReportedComments){
 		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
-		$req = "SELECT `id`, ".format_date('`post_date`').", `publisher`, `site`, IF(`comment_state` = 0, `comment`, '".$textForReportedComments."') AS `comment`, `vote_up`, `vote_down`, IF(`comment_state` = 0, 0, 1) AS `reported`
+		$req = "SELECT `id`, ".format_date('`post_date`').", `avis`, `publisher`, `site`, IF(`comment_state` = 0, `comment`, '".$textForReportedComments."') AS `comment`, `vote_up`, `vote_down`, IF(`comment_state` = 0, 0, 1) AS `reported`
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` 
-		WHERE service_id=".$usr['noService']." AND `elt_type`=".$elt_type." AND `elt_id`=".$elt_id."
-		ORDER BY `post_date` 
+		WHERE service_id=".$usr['noService']." AND `elt_type`=".$i_type." AND `elt_id`=".$elt_id."
+		ORDER BY `post_timestamp` 
 		LIMIT ".($page-1)*$env['commentPageSize'].", ".$env['commentPageSize'].";";
-		
 		return getMultipleDataRows($req, $usr);
 	}
 	
@@ -138,7 +137,8 @@
 	function retrieveSuiviForRessource($usr, $elt_type, $elt_id){
 		$dbVars = setDbVars(getStatus());
 		
-		$req = "SELECT mail, name, info FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."suivi` WHERE service_id=".$usr['noService']." AND elt_type=".ressourceTypeToCode($elt_type)." AND elt_id='".$elt_id."' AND actif=1 ORDER BY post_date;";
+		$req = "SELECT mail, name, info, ".format_date('`post_date`')." FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."suivi` WHERE service_id=".$usr['noService']." AND elt_type=".ressourceTypeToCode($elt_type)." AND elt_id='".$elt_id."' AND actif=1 ORDER BY post_timestamp;";
+		
 		return getMultipleDataRows($req, $usr);
 	}
 		

@@ -42,12 +42,12 @@
 		return persistSelectionQuotes($usr, $tabquoteids, $sel_id);
 	}
 	
-	function postComment($usr, $elt_type, $elt_id, $publisher, $mail, $site, $comment, &$commentid){
+	function postComment($usr, $elt_type, $elt_id, $i_avis, $publisher, $mail, $site, $comment, &$commentid){
 		if($elt_type == 'quote'){
-			$ret = persistQuoteComment($usr, iptoint(getIp()), $elt_id, $publisher, $mail, $site, $comment, $commentid);
+			$ret = persistQuoteComment($usr, iptoint(getIp()), $elt_id, $i_avis, $publisher, $mail, $site, $comment, $commentid);
 		}
 		else if(isRessourceType($elt_type)){
-			$ret = persistComment($usr, iptoint(getIp()), $elt_type, $elt_id, $publisher, $mail, $site, $comment, $commentid);
+			$ret = persistComment($usr, iptoint(getIp()), $elt_type, $elt_id, $i_avis, $publisher, $mail, $site, $comment, $commentid);
 		}
 		else{
 			persistFatalErrorLog($usr, "post.php : postComment() : not found elt_type ($elt_type).", true);

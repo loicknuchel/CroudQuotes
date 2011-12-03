@@ -14,12 +14,12 @@
 	}
 	
 	function getComments($usr, $elt_type, $elt_id, $page, $textForReportedComments){
-		$type = ressourceTypeToCode($elt_type);
-		if($type == null){
+		$i_type = ressourceTypeToCode($elt_type);
+		if($i_type == null){
 			persistFatalErrorLog($usr, "get.php : getComments() : not found elt_type ($elt_type).", true);
 			return null;
 		}
-		return retrieveComments($usr, $type, $elt_id, $page, $textForReportedComments);
+		return retrieveComments($usr, $i_type, $elt_id, $page, $textForReportedComments);
 	}
 	
 	function getTopQuotes($usr, $page){
