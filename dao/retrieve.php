@@ -44,20 +44,20 @@
 			else{ $ids .= ' OR q.id='.$value.'';}
 		}
 		
-		return retrieveMultipleQuotes($usr, -1, "AND (".$ids.") ORDER BY post_timestamp DESC, q.id DESC;");
+		return retrieveMultipleQuotes($usr, -1, "AND (".$ids.") ORDER BY q.vote_up-q.vote_down DESC, post_timestamp DESC, q.id DESC;");
 	}
 	
 	function retrieveCategoryQuotes($usr, $cat_id, $page){
-		return retrieveMultipleQuotes($usr, $page, "AND q.category='".$cat_id."' ORDER BY post_timestamp DESC");
+		return retrieveMultipleQuotes($usr, $page, "AND q.category='".$cat_id."' ORDER BY q.vote_up-q.vote_down DESC, post_timestamp DESC");
 	}
 	
 	function retrieveSelectionQuotes($usr, $sel_id, $page){
 		$dbVars = setDbVars(getStatus());
-		return retrieveMultipleQuotes($usr, $page, "AND sq.selection_id='".$sel_id."' ORDER BY post_timestamp DESC" , "LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` sq on q.id=sq.quote_id AND q.service_id=sq.service_id");
+		return retrieveMultipleQuotes($usr, $page, "AND sq.selection_id='".$sel_id."' ORDER BY q.vote_up-q.vote_down DESC, post_timestamp DESC" , "LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` sq on q.id=sq.quote_id AND q.service_id=sq.service_id");
 	}
 	
 	function retrieveAuthorQuotes($usr, $auth, $page){
-		return retrieveMultipleQuotes($usr, $page, "AND q.author='".$auth."' ORDER BY post_timestamp DESC");
+		return retrieveMultipleQuotes($usr, $page, "AND q.author='".$auth."' ORDER BY q.vote_up-q.vote_down DESC, post_timestamp DESC");
 	}
 	
 	// private
