@@ -5,7 +5,6 @@
 	- dans la table CQ1_4_api_log, ajouter une colonne methode et une colonne params
 */
 
-DROP TABLE IF EXISTS `CQ1_4_petition`;
 DROP TABLE IF EXISTS `CQ1_4_key_cpt`;
 DROP TABLE IF EXISTS `CQ1_4_app_log`;
 DROP TABLE IF EXISTS `CQ1_4_sqlreq_log`;
@@ -17,6 +16,7 @@ DROP TABLE IF EXISTS `CQ1_4_reported`;
 DROP TABLE IF EXISTS `CQ1_4_vote`;
 DROP TABLE IF EXISTS `CQ1_4_selection`;
 DROP TABLE IF EXISTS `CQ1_4_history`;
+DROP TABLE IF EXISTS `CQ1_4_petition`;
 DROP TABLE IF EXISTS `CQ1_4_comment`;
 DROP TABLE IF EXISTS `CQ1_4_quote`;
 DROP TABLE IF EXISTS `CQ1_4_category`;
