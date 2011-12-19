@@ -17,7 +17,10 @@
 		$usr['key'] = safe_string(isset($par["key"]) ? $par["key"] : null);
 		filtre($usr); // exit if incorrect
 		
-		if(isset($par['quote'])){
+		if(isset($par['quoteid']) && isset($par['quote'])){
+			echo apiRephraseQuote($usr, $par, $rel);
+		}
+		else if(isset($par['quote'])){
 			echo apiNewQuote($usr, $par, $rel);
 		}
 		else if(isset($par['quoteid']) && isset($par['vote'])){

@@ -24,6 +24,19 @@
 		return $ret;
 	}
 	
+	function postRephraseQuote($usr, $quoteid, $quote, $expl, $pub, $mail, $site){
+		$ret = persistRephraseQuote($usr, iptoint(getIp()), $quoteid, $quote, $expl, $pub, $mail, $site);
+		
+		if($ret == 200){ // TODO
+			/*$elt_type = 'quote';
+			$postInfo['publisher'] = $publisher;
+			$postInfo['comment'] = $comment;
+			send_mail_notification($usr, $elt_type, $quoteid, $postInfo);*/
+		}
+		
+		return $ret;
+	}
+	
 	function postCategory($usr, $name, &$categoryid){
 		return persistCategory($usr, iptoint(getIp()), $name, $categoryid);
 	}

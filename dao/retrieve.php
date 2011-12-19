@@ -17,12 +17,30 @@
 	// private 
 	function retrieveUniqueQuote($usr, $select){
 		$dbVars = setDbVars(getStatus());
-		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
+		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.origin_quote, q.source, q.context, q.explanation, q.origin_explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id
 		WHERE q.service_id=".$usr['noService']." AND quote_state=0
 		".$select."
 		LIMIT 1;";
 		return getUniqueDataRow($req, $usr);
+	}
+	
+	function retrieveQuoteRephrase($usr, $quoteid){
+		$dbVars = setDbVars(getStatus());
+		$env = setEnv();
+		
+		/*
+		SELECT q.`post_date`, q.`publisher`, q.`site`, q.`content` AS quote, e.`content` AS expl
+		FROM cq1_4_history q
+			LEFT OUTER JOIN cq1_4_history e ON q.service_id=e.service_id AND q.elt_type=e.elt_type AND q.elt_id=e.elt_id
+		WHERE q.`service_id`=1 AND q.`elt_type`=2 AND q.`elt_id`=1 AND q.`elt_field`=20 AND e.`elt_field`=21
+		*/
+		$req = "SELECT ".format_date('q.`post_date`').", q.`publisher`, q.`site`, q.`content` AS quote, e.`content` AS explanation
+		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."history` q 
+			LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."history` e ON q.service_id=e.service_id AND q.elt_type=e.elt_type AND q.elt_id=e.elt_id
+		WHERE q.`service_id`=".$usr['noService']." AND q.`elt_type`=2 AND q.`elt_id`=".$quoteid." AND q.`elt_field`=20 AND e.`elt_field`=21
+		ORDER BY post_timestamp DESC;";
+		return getMultipleDataRows($req, $usr);
 	}
 	
 	function retrieveTopQuotes($usr, $page){
@@ -69,27 +87,13 @@
 		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
-		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
+		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.origin_quote, q.source, q.context, q.explanation, q.origin_explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id ".$join."
 		WHERE q.quote_state=0 AND q.service_id=".$usr['noService']." ".$select."";
 		if($page != -1){$req .= " LIMIT ".($page-1)*$env['quotePageSize'].", ".$env['quotePageSize'].";";}
 		
 		return getMultipleDataRows($req, $usr);
 	}
-	
-	/*function retrieveLastCommentQuotes($usr, $page){
-		$dbVars = setDbVars(getStatus());
-		$env = setEnv();
-		
-		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.source, q.context, q.explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
-		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q 
-			LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id
-		WHERE q.quote_state=0 AND q.service_id=".$usr['noService']."
-		ORDER BY q.comments DESC, q.vote_up-q.vote_down DESC, q.vote_up DESC, post_timestamp DESC 
-		LIMIT ".($page-1)*$env['quotePageSize'].", ".$env['quotePageSize'].";";
-		
-		return getMultipleDataRows($req, $usr);
-	}*/
 		
 	function retrieveComments($usr, $i_type, $elt_id, $page, $textForReportedComments){
 		$dbVars = setDbVars(getStatus());

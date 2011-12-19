@@ -15,9 +15,9 @@ DROP TABLE IF EXISTS `CQ1_4_category_quote`;
 DROP TABLE IF EXISTS `CQ1_4_reported`;
 DROP TABLE IF EXISTS `CQ1_4_vote`;
 DROP TABLE IF EXISTS `CQ1_4_selection`;
-DROP TABLE IF EXISTS `CQ1_4_history`;
 DROP TABLE IF EXISTS `CQ1_4_petition`;
 DROP TABLE IF EXISTS `CQ1_4_comment`;
+DROP TABLE IF EXISTS `CQ1_4_history`;
 DROP TABLE IF EXISTS `CQ1_4_quote`;
 DROP TABLE IF EXISTS `CQ1_4_category`;
 DROP TABLE IF EXISTS `CQ1_4_id_increment`;
@@ -64,9 +64,11 @@ CREATE TABLE `CQ1_4_quote` (
 	`post_ip` INT NOT NULL,
 	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
 	`quote` TEXT NOT NULL,
+	`origin_quote` TEXT NOT NULL,
 	`source` VARCHAR(256) default NULL,
 	`context` TEXT default NULL,
 	`explanation` TEXT default NULL,
+	`origin_explanation` TEXT default NULL,
 	`author` VARCHAR(256) default NULL,
 	`publisher` VARCHAR(256) default NULL,
 	`publisher_info` TEXT default NULL,
@@ -86,6 +88,21 @@ CREATE TABLE `CQ1_4_quote` (
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `CQ1_4_quote` ADD CONSTRAINT FK_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `CQ1_4_service`(`id`);
 ALTER TABLE `CQ1_4_quote` ADD CONSTRAINT FK_quote_category FOREIGN KEY (`category`) REFERENCES `CQ1_4_category`(`id`);
+
+CREATE TABLE `CQ1_4_history` (
+	`service_id` INT NOT NULL,
+	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment',
+	`elt_id` INT NOT NULL,
+	`elt_field` INT NOT NULL COMMENT '20:quote.quote, 21:quote.explanation',
+	`post_ip` INT NOT NULL,
+	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`publisher` VARCHAR(256) default NULL,
+	`mail` VARCHAR(256) default NULL,
+	`site` VARCHAR(256) default NULL,
+	`content` TEXT,
+	PRIMARY KEY (`service_id`, `elt_type`, `elt_id`, `elt_field`, `post_date`)
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `CQ1_4_history` ADD CONSTRAINT FK_history_service_id FOREIGN KEY (`service_id`) REFERENCES `CQ1_4_service`(`id`);
 
 CREATE TABLE `CQ1_4_comment` (
 	`service_id` INT NOT NULL,
@@ -134,17 +151,6 @@ CREATE TABLE `CQ1_4_petition` (
 	KEY (`sign_no`),
 	KEY (`mail`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-
-CREATE TABLE `CQ1_4_history` (
-	`service_id` INT NOT NULL,
-	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment',
-	`elt_id` INT NOT NULL,
-	`history_field` INT NOT NULL COMMENT '10:quote.quote, 11:quote.source, 12:quote.context, 13:quote.explanation, 14:quote.author, 20:comment.comment',
-	`create_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-	`content` TEXT,
-	PRIMARY KEY (`service_id`, `elt_type`, `elt_id`, `history_field`, `create_date`)
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `CQ1_4_history` ADD CONSTRAINT FK_history_service_id FOREIGN KEY (`service_id`) REFERENCES `CQ1_4_service`(`id`);
 
 CREATE TABLE `CQ1_4_selection` (
 	`service_id` INT NOT NULL,

@@ -13,6 +13,10 @@
 		return retrieveRandomQuote($usr);
 	}
 	
+	function getQuoteRephrase($usr, $quoteid){
+		return retrieveQuoteRephrase($usr, $quoteid);
+	}
+	
 	function getComments($usr, $elt_type, $elt_id, $page, $textForReportedComments){
 		$i_type = ressourceTypeToCode($elt_type);
 		if($i_type == null){
