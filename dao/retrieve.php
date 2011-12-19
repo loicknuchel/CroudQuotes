@@ -37,6 +37,10 @@
 		return retrieveMultipleQuotes($usr, $page, "ORDER BY post_timestamp DESC");
 	}
 	
+	function retrieveLastActivityQuotes($usr, $page){
+		return retrieveMultipleQuotes($usr, $page, "ORDER BY q.last_activity DESC, q.comments DESC, q.vote_up-q.vote_down DESC, q.vote_up DESC, post_timestamp DESC");
+	}
+	
 	function retrieveCustomQuoteList($usr, $tabid){
 		$ids = null;
 		foreach($tabid as $key => $value){

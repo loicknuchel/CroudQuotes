@@ -30,12 +30,12 @@
 		return retrieveTopCommentQuotes($usr, $page);
 	}
 	
-	/*function getLastCommentQuotes($usr, $page){
-		return retrieveLastCommentQuotes($usr, $page);
-	}*/
-	
 	function getLastsQuotes($usr, $page){
 		return retrieveLastsQuotes($usr, $page);
+	}
+	
+	function getLastActivityQuotes($usr, $page){
+		return retrieveLastActivityQuotes($usr, $page);
 	}
 	
 	function getCustomQuoteList($usr, $tabid){

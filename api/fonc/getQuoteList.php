@@ -11,7 +11,7 @@ function apiGetQuoteList(&$usr, $params, $server_path, $order){
 	if($order == 'category'){$cat = safe_string(isset($params["cat"]) ? $params["cat"] : null);}
 	else if($order == 'selection'){$sel = safe_string(isset($params["sel"]) ? $params["sel"] : null);}
 	
-	if($order == 'top' || $order == 'topcomment' || $order == 'lastcomment'  || $order == 'lasts'){$pages = getTotalPages($usr);}
+	if($order == 'top' || $order == 'topcomment' || $order == 'lastactivity'  || $order == 'lasts'){$pages = getTotalPages($usr);}
 	else if($order == 'category'){$pages = getCategoryTotalPages($usr, $cat);}
 	else if($order == 'selection'){$pages = getSelectionTotalPages($usr, $sel);}
 	if($p == null){$p = '1'; }
@@ -19,8 +19,8 @@ function apiGetQuoteList(&$usr, $params, $server_path, $order){
 	
 	if($order == 'top'){$quoteList_result = getTopQuotes($usr, $p);}
 	else if($order == 'topcomment'){$quoteList_result = getTopCommentQuotes($usr, $p);}
-	/*else if($order == 'lastcomment'){$quoteList_result = getLastCommentQuotes($usr, $p);} // TODO*/
 	else if($order == 'lasts'){$quoteList_result = getLastsQuotes($usr, $p);}
+	else if($order == 'lastactivity'){$quoteList_result = getLastActivityQuotes($usr, $p);}
 	else if($order == 'category'){$quoteList_result = getCategoryQuotes($usr, $cat, $p);}
 	else if($order == 'selection'){$quoteList_result = getSelectionQuotes($usr, $sel, $p);}
 	else{$quoteList_result = null;}
@@ -54,7 +54,7 @@ function apiGetQuoteListByTopComment(&$usr, $params, $server_path){
 
 // API : quote_list.php:GET?key={key}&list=lastcomment[&p={no_quote_page}]
 function apiGetQuoteListByLastComment(&$usr, $params, $server_path){
-	return apiGetQuoteList($usr, $params, $server_path, 'lastcomment');
+	return apiGetQuoteList($usr, $params, $server_path, 'lastactivity');
 }
 
 // API : quote_list.php:GET?key={key}&list=lasts[&p={no_quote_page}]

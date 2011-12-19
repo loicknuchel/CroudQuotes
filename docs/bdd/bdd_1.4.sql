@@ -76,6 +76,7 @@ CREATE TABLE `CQ1_4_quote` (
 	`vote_up` INT NOT NULL default 0,
 	`vote_down` INT NOT NULL default 0,
 	`comments` INT NOT NULL default 0,
+	`last_activity` timestamp default 0 COMMENT 'also readable activity : quote, comment or rephrase',
 	`signatures` INT NOT NULL default 0,
 	`reported` INT NOT NULL default 0,
 	`quote_state` INT NOT NULL default 0 COMMENT '0:public, 1:reported, 2:deleted',
