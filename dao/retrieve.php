@@ -37,8 +37,8 @@
 		*/
 		$req = "SELECT ".format_date('q.`post_date`').", q.`publisher`, q.`site`, q.`content` AS quote, e.`content` AS explanation
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."history` q 
-			LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."history` e ON q.service_id=e.service_id AND q.elt_type=e.elt_type AND q.elt_id=e.elt_id
-		WHERE q.`service_id`=".$usr['noService']." AND q.`elt_type`=2 AND q.`elt_id`=".$quoteid." AND q.`elt_field`=20 AND e.`elt_field`=21
+			LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."history` e ON q.service_id=e.service_id AND q.elt_type=e.elt_type AND q.elt_id=e.elt_id AND q.post_date=e.post_date AND e.`elt_field`=21
+		WHERE q.`service_id`=".$usr['noService']." AND q.`elt_type`=2 AND q.`elt_id`=".$quoteid." AND q.`elt_field`=20
 		ORDER BY post_timestamp DESC;";
 		return getMultipleDataRows($req, $usr);
 	}
