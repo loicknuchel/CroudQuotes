@@ -145,8 +145,7 @@
 	function retrieveSuiviForRessource($usr, $elt_type, $elt_id){
 		$dbVars = setDbVars(getStatus());
 		
-		$req = "SELECT mail, name, info, ".format_date('`post_date`')." FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."suivi` WHERE service_id=".$usr['noService']." AND elt_type=".ressourceTypeToCode($elt_type)." AND elt_id='".$elt_id."' AND actif=1 ORDER BY post_timestamp;";
-		
+		$req = "SELECT mail, name, info, ".format_date('`post_date`')." FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."suivi` WHERE service_id=".$usr['noService']." AND elt_type='".ressourceTypeToCode($elt_type)."' AND elt_id='".$elt_id."' AND actif=1 ORDER BY post_timestamp;";
 		return getMultipleDataRows($req, $usr);
 	}
 		
@@ -270,16 +269,16 @@
 		$req = "SELECT `".$fieldName."` FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."id_increment` WHERE `service_id`='".$usr['noService']."';";
 		$newId = getSingleData($usr, $req, $fieldName, 0);
 		
-		if($newId == null){
-			persistFatalErrorLog($usr, "retrieve.php : retrieveNewId() : newId not found => Probably wrong tableName : ($tableName)."); // Ne dois jamais entrer ici !!!
-			return null;
-		}
-		else{
-			$newId = $newId+1;
-			$req = "UPDATE `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."id_increment` SET `".$fieldName."`=".$newId.";";
+		if($newId == null){ // s'il n'y a pas d'enregistrement pour le service
+			$req = "INSERT INTO `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."id_increment` (`service_id`) VALUES ('".$usr['noService']."');";
 			query($req, $usr);
-			return $newId;
+			$newId = 0;
 		}
+		
+		$newId = $newId+1;
+		$req = "UPDATE `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."id_increment` SET `".$fieldName."`=".$newId." WHERE `service_id`='".$usr['noService']."';";
+		query($req, $usr);
+		return $newId;
 	}
 	
 	function retrieveLastId($usr, $tableName){

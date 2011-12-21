@@ -18,7 +18,7 @@
 			$postInfo['publisher'] = $pub;
 			$postInfo['quote'] = $quote;
 			$postInfo['quoteid'] = $quoteid;
-			send_mail_notification($usr, 'site', 1, $postInfo);
+			send_mail_notification($usr, 'site', 1,'newquote', $postInfo);
 		}
 		
 		return $ret;
@@ -27,11 +27,11 @@
 	function postRephraseQuote($usr, $quoteid, $quote, $expl, $pub, $mail, $site){
 		$ret = persistRephraseQuote($usr, iptoint(getIp()), $quoteid, $quote, $expl, $pub, $mail, $site);
 		
-		if($ret == 200){ // TODO
-			/*$elt_type = 'quote';
-			$postInfo['publisher'] = $publisher;
-			$postInfo['comment'] = $comment;
-			send_mail_notification($usr, $elt_type, $quoteid, $postInfo);*/
+		if($ret == 200){
+			$postInfo['publisher'] = $pub;
+			$postInfo['quote'] = $quote;
+			$postInfo['explanation'] = $expl;
+			send_mail_notification($usr, 'quote', $quoteid, 'rephrase', $postInfo);
 		}
 		
 		return $ret;
@@ -70,7 +70,7 @@
 		if(($elt_type == 'quote' || $elt_type == 'page') && $ret == 200){
 			$postInfo['publisher'] = $publisher;
 			$postInfo['comment'] = $comment;
-			send_mail_notification($usr, $elt_type, $elt_id, $postInfo);
+			send_mail_notification($usr, $elt_type, $elt_id, 'newcomment', $postInfo);
 		}
 		
 		return $ret;
