@@ -11,8 +11,8 @@
 			if($action == 'newcomment'){
 				$quote = retrieveQuote($usr, $elt_id);
 				
-				$sender_name = 'Mon Programme 2012 suivi';
-				$subject = 'Suivi de la proposition #'.$elt_id.' : Nouveau commentaire';
+				$sender_name = 'Suivi Mon Programme 2012';
+				$subject = 'Nouveau commentaire sur la proposition #'.$elt_id.'';
 				$content = '
 				<div>
 					Vous suivez les commentaires de la proposition #'.$elt_id.' :<br/>
@@ -33,8 +33,8 @@
 				$send = true;
 			}
 			else if($action == 'rephrase'){
-				$sender_name = 'Mon Programme 2012 suivi';
-				$subject = 'Suivi de la proposition #'.$elt_id.' : Reformulation';
+				$sender_name = 'Suivi Mon Programme 2012';
+				$subject = 'Reformulation de la proposition #'.$elt_id.'';
 				$content = '
 				<div>
 					La proposition #'.$elt_id.' que vous suivez a été reformulée par '.$postInfo['publisher'].' :<br/>
@@ -57,21 +57,21 @@
 		}
 		else if($elt_type == 'page'){ // a l'ajout d'un nouveau commentaire sur une page
 			if($action == 'newcomment'){
-				$sender_name = '';
+				$sender_name = 'Suivi Mon Programme 2012';
 				$subject = '';
 				$content = '';
 			}
 		}
 		else if($elt_type == 'site'){ // a l'ajout d'une nouvelle citation
 			if($action == 'newquote'){
-				$sender_name = 'Mon Programme 2012 : suivi des propositions';
-				$subject = 'Suivi deu site MonProgramme2012 : Nouvelle proposition';
+				$sender_name = 'Suivi Mon Programme 2012';
+				$subject = 'Nouvelle proposition sur le site MonProgramme2012';
 				$content = '
 				Une nouvelle proposition viens d\'être publié par '.$postInfo['publisher'].' :<br/>
 				<br/>
-				'.$postInfo['quote'].'<br/>
+				<div style="padding: 15px; font-style: italic; line-height: 30px;">'.$postInfo['quote'].'</div>
 				<br/>
-				Vous pouvez réagir à cette proposition <a href="http://monprogramme2012.lkws.fr/?q='.$postInfo['quoteid'].'">ici</a>.<br/>
+				Vous pouvez réagir à cette proposition <a href="http://monprogramme2012.lkws.fr/?q='.$postInfo['quoteid'].'">http://monprogramme2012.lkws.fr/?q='.$postInfo['quoteid'].'</a>.<br/>
 				<br/>
 				';
 				$send = true;
