@@ -263,6 +263,13 @@
 		return getSingleData($usr, $req, 'name');
 	}
 	
+	function retrieveSelectionPass($usr, $sel_id){
+		$dbVars = setDbVars(getStatus());
+		
+		$req = "SELECT pass FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection` WHERE service_id=".$usr['noService']." AND id='".$sel_id."' LIMIT 1;";
+		return getSingleData($usr, $req, 'pass');
+	}
+	
 	function retrieveNewId($usr, $tableName){
 		$dbVars = setDbVars(getStatus());
 		$fieldName = str_replace("newCQ", "id", $tableName);

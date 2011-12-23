@@ -158,6 +158,7 @@ CREATE TABLE `CQ1_4_selection` (
 	`post_ip` INT NOT NULL,
 	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
 	`name` VARCHAR(256) NOT NULL,
+	`pass` VARCHAR(40) default NULL,
 	PRIMARY KEY (`service_id`, `id`),
 	UNIQUE (`service_id`, `name`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -210,8 +211,8 @@ ALTER TABLE `CQ1_4_category_quote` ADD CONSTRAINT FK_category_category_id FOREIG
 /* lie les sélections avec les quotes */
 CREATE TABLE `CQ1_4_selection_quote` (
 	`service_id` INT NOT NULL,
-	`quote_id` INT NOT NULL,
 	`selection_id` INT NOT NULL,
+	`quote_id` INT NOT NULL,
 	PRIMARY KEY (`service_id`, `quote_id`, `selection_id`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `CQ1_4_selection_quote` ADD CONSTRAINT FK_selection_quote_service_id FOREIGN KEY (`service_id`) REFERENCES `CQ1_4_service`(`id`);

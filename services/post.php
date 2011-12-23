@@ -47,12 +47,27 @@
 		return persistQuoteCategory($usr, iptoint(getIp()), $quoteid, $cat_id, $value, $newcategoryid);
 	}
 	
-	function postSelection($usr, $sel, &$sel_id){
-		return persistSelection($usr, iptoint(getIp()), $sel, $sel_id);
+	function postSelection($usr, $sel, $pass, &$sel_id){
+		$hash = ($pass != null && $pass != '') ? sha1($pass) : null;
+		return persistSelection($usr, iptoint(getIp()), $sel, $hash, $sel_id);
 	}
 	
 	function postSelectionQuotes($usr, $tabquoteids, $sel_id){
 		return persistSelectionQuotes($usr, $tabquoteids, $sel_id);
+	}
+	
+	function postAddToSelection($usr, $sel_id, $tabquoteids, $pass){
+		$sel_hash = retrieveSelectionPass($usr, $sel_id);
+		if(sha1($pass) == $sel_hash){
+			return persistSelectionQuotes($usr, $tabquoteids, $sel_id);
+		} else{ return 406; }
+	}
+	
+	function postRemToSelection($usr, $sel_id, $tabquoteids, $pass){
+		$sel_hash = retrieveSelectionPass($usr, $sel_id);
+		if(sha1($pass) == $sel_hash){
+			return persistRemSelectionQuotes($usr, $sel_id, $tabquoteids);
+		} else{ return 406; }
 	}
 	
 	function postComment($usr, $elt_type, $elt_id, $i_avis, $publisher, $mail, $site, $comment, &$commentid){
