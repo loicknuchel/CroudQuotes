@@ -109,7 +109,7 @@ CREATE TABLE `CQ1_4_comment` (
 	`id` INT NOT NULL,
 	`post_ip` INT NOT NULL,
 	`post_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment',
+	`elt_type` INT NOT NULL COMMENT '1:page, 2:quote, 3:comment, 6:selection',
 	`elt_id` INT NOT NULL,
 	`avis` INT NOT NULL default 0 COMMENT '0:sans avis, 1:pour, 2:contre',
 	`publisher` VARCHAR(256) NOT NULL,
