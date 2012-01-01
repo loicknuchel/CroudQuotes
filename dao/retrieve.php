@@ -279,6 +279,16 @@
 		return getSingleData($usr, $req, 'pass');
 	}
 	
+	function retrieveNbQuoteSelection($usr, $sel_id){
+		$dbVars = setDbVars(getStatus());
+		
+		$req = "SELECT count(*) as nb 
+			FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection` s
+				INNER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` sq ON s.service_id = sq.service_id AND s.id=sq.selection_id
+			WHERE s.service_id=".$usr['noService']." AND s.id='".$sel_id."';";
+		return getSingleData($usr, $req, 'nb', false);
+	}
+	
 	function retrieveNewId($usr, $tableName){
 		$dbVars = setDbVars(getStatus());
 		$fieldName = str_replace("newCQ", "id", $tableName);

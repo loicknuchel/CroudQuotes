@@ -17,6 +17,11 @@
 				echo '<h1>Erreur de selection de la base</h1>';
 				exit;
 			}
+			
+			// vérifie si on est bien connecté !!!
+			/*$res = mysql_query('SELECT USER() as usr, CURRENT_USER() as cur_usr;');
+			$ret = mysql_fetch_array($res, MYSQL_ASSOC);
+			echo 'USER() : '.$ret['usr'].', CURRENT_USER() : '.$ret['cur_usr'].'<br/>';*/
 		}
 		
 		return $db;
