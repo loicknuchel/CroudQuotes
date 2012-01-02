@@ -7,8 +7,8 @@
 		$send = false;
 		$sender_mail = 'noreply@lkws.fr';
 		
-		if($elt_type == 'quote'){ // a l'ajout d'un nouveau commentaire sur une citation
-			if($action == 'newcomment'){
+		if($elt_type == 'quote'){ 
+			if($action == 'newcomment'){ // a l'ajout d'un nouveau commentaire sur une citation
 				$quote = retrieveQuote($usr, $elt_id);
 				
 				$sender_name = 'Suivi Mon Programme 2012';
@@ -32,7 +32,7 @@
 				';
 				$send = true;
 			}
-			else if($action == 'rephrase'){
+			else if($action == 'rephrase'){ // lorsqu'une citation est reformulée
 				$sender_name = 'Suivi Mon Programme 2012';
 				$subject = 'Reformulation de la proposition #'.$elt_id.'';
 				$content = '

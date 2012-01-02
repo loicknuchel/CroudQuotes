@@ -130,11 +130,12 @@
 		if($page == 'all'){ $limit = ""; }
 		else{ $limit = "LIMIT ".($page-1)*$env['selectionPageSize'].", ".$env['selectionPageSize'].""; }
 		
-		$req = "SELECT DISTINCT s.`id`, ".format_date('s.`post_date`').", s.`name`
+		$req = "SELECT DISTINCT s.`id`, ".format_date('s.`post_date`').", s.`name`, count(*) as nbquotes
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection` s
 			INNER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` sq ON s.id=sq.selection_id AND s.service_id=sq.service_id
 			INNER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q ON sq.quote_id=q.id AND s.service_id=q.service_id
 		WHERE q.quote_state=0 AND s.service_id=".$usr['noService']."
+		GROUP BY s.`id`
 		ORDER BY s.`name` 
 		".$limit.";";
 		
