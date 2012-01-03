@@ -88,7 +88,8 @@
 		$env = setEnv();
 		
 		$req = "SELECT q.id, ".format_date('q.`post_date`').", q.quote, q.origin_quote, q.source, q.context, q.explanation, q.origin_explanation, q.author, q.publisher, q.publisher_info, q.site, c.name as category, q.category as category_id, q.vote_up, q.vote_down, q.comments, q.signatures 
-		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id ".$join."
+		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q 
+			LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c on q.category=c.id AND q.service_id=c.service_id ".$join."
 		WHERE q.quote_state=0 AND q.service_id=".$usr['noService']." ".$select."";
 		if($page != -1){$req .= " LIMIT ".($page-1)*$env['quotePageSize'].", ".$env['quotePageSize'].";";}
 		
@@ -125,18 +126,21 @@
 		return getMultipleDataRows($req, $usr);
 	}
 	
-	function retrieveSelections($usr, $page){
+	function retrieveSelections($usr, $page, $quote_id = null){
 		$dbVars = setDbVars(getStatus());
 		$env = setEnv();
 		
 		if($page == 'all'){ $limit = ""; }
 		else{ $limit = "LIMIT ".($page-1)*$env['selectionPageSize'].", ".$env['selectionPageSize'].""; }
 		
+		if($quote_id != null){$quote_selections = "AND s.`id` in (SELECT selection_id FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` WHERE service_id=".$usr['noService']." AND quote_id=".$quote_id.")";}
+		else{$quote_selections = "";}
+		
 		$req = "SELECT DISTINCT s.`id`, ".format_date('s.`post_date`').", s.`name`, count(*) as nbquotes
 		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection` s
 			INNER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection_quote` sq ON s.id=sq.selection_id AND s.service_id=sq.service_id
 			INNER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q ON sq.quote_id=q.id AND s.service_id=q.service_id
-		WHERE q.quote_state=0 AND s.service_id=".$usr['noService']."
+		WHERE q.quote_state=0 AND s.service_id=".$usr['noService']." ".$quote_selections."
 		GROUP BY s.`id`
 		ORDER BY s.`name` 
 		".$limit.";";

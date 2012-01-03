@@ -70,6 +70,10 @@
 		return retrieveSelections($usr, $page);
 	}
 	
+	function getQuoteSelections($usr, $quote_id){
+		return retrieveSelections($usr, "all", $quote_id);
+	}
+	
 	function getMailSuivi($usr, $mail){
 		return retrieveSuiviByMail($usr, $mail);
 	}

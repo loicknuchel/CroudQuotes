@@ -8,6 +8,7 @@ function apiGetQuoteList(&$usr, $params, $server_path, $order){
 	
 	saveExtraDatas($usr, $params);
 	$p = safe_int(isset($params["p"]) ? $params["p"] : '1');
+	$selections = isset($params["selections"]) ? $params["selections"] : null;
 	if($order == 'category'){$cat = safe_string(isset($params["cat"]) ? $params["cat"] : null);}
 	else if($order == 'selection'){$sel = safe_string(isset($params["sel"]) ? $params["sel"] : null);}
 	
@@ -29,15 +30,15 @@ function apiGetQuoteList(&$usr, $params, $server_path, $order){
 		if($order == 'category'){
 			if(is_numeric($cat)){ $cat_id = $cat; $cat = getCategoryName($usr, $cat_id); }
 			else{ $cat_id = getCategoryId($usr, $cat); }
-			return createListQuoteJson($usr, $quoteList_result, $p, $pages, ',"category_id":'.$cat_id.',"category_name":"'.$cat.'"');
+			return createListQuoteJson($usr, $quoteList_result, $p, $pages, Array('selections'=>($selections == 1)), ',"category_id":'.$cat_id.',"category_name":"'.$cat.'"');
 		}
 		else if($order == 'selection'){
 			if(is_numeric($sel)){ $sel_id = $sel; $sel = getSelectionName($usr, $sel_id); }
 			else{ $sel_id = getSelectionId($usr, $sel); }
-			return createListQuoteJson($usr, $quoteList_result, $p, $pages, ',"selection_id":'.$sel_id.',"selection_name":"'.$sel.'"');
+			return createListQuoteJson($usr, $quoteList_result, $p, $pages, Array('selections'=>($selections == 1)), ',"selection_id":'.$sel_id.',"selection_name":"'.$sel.'"');
 		}
 		else{
-			return createListQuoteJson($usr, $quoteList_result, $p, $pages, null);
+			return createListQuoteJson($usr, $quoteList_result, $p, $pages, Array('selections'=>($selections == 1)));
 		}
 	} else{ return createErrorJson($usr, 404); } // pas de résultats
 }
@@ -81,6 +82,7 @@ function apiGetQuoteListByCustom(&$usr, $params, $server_path){
 	
 	$usr['noheaders'] = safe_int(isset($params["noheaders"]) ? $params["noheaders"] : null);
 	$quoteids = safe_string(isset($params["quoteids"]) ? $params["quoteids"] : null);
+	$selections = isset($params["selections"]) ? $params["selections"] : null;
 	
 	$ind = 0;
 	$tabid = null;
@@ -93,7 +95,7 @@ function apiGetQuoteListByCustom(&$usr, $params, $server_path){
 	
 	$quoteList_result = getCustomQuoteList($usr, $tabid);
 	if($quoteList_result != null){
-		return createListQuoteJson($usr, $quoteList_result, '1', '1');
+		return createListQuoteJson($usr, $quoteList_result, '1', '1', Array('selections'=>($selections == 1)));
 	} else{ return createErrorJson($usr, 404); } // pas de résultats
 }
 
@@ -108,6 +110,7 @@ function apiGetQuoteListByAuthor(&$usr, $params, $server_path){
 	$usr['noheaders'] = safe_int(isset($params["noheaders"]) ? $params["noheaders"] : null);
 	$auth = safe_string(isset($params["auth"]) ? $params["auth"] : null);
 	$p = safe_int(isset($params["p"]) ? $params["p"] : '1');
+	$selections = isset($params["selections"]) ? $params["selections"] : null;
 	
 	$pages = getAuthorTotalPages($usr, $auth);
 	if($p == null){$p = '1'; }
@@ -115,7 +118,7 @@ function apiGetQuoteListByAuthor(&$usr, $params, $server_path){
 	
 	$quoteList_result = getAuthorQuotes($usr, $auth, $p);
 	if($quoteList_result != null){
-		return createListQuoteJson($usr, $quoteList_result, $p, $pages);
+		return createListQuoteJson($usr, $quoteList_result, $p, $pages, Array('selections'=>($selections == 1)));
 	} else{ return createErrorJson($usr, 404); } // pas de résultats
 }
 ?>
