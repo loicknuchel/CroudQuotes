@@ -20,6 +20,7 @@
 			Accéder à la <a href="admin_key.php?adminkey='.$_GET['adminkey'].'">gestion des clés</a><br/>
 			Accéder à l\'<a href="admin_quotes.php?adminkey='.$_GET['adminkey'].'">administration des citations</a><br/>
 			Accéder à l\'<a href="admin_comments.php?adminkey='.$_GET['adminkey'].'">administration des commentaires</a><br/>
+			Accéder à la <a href="create_req.php?adminkey='.$_GET['adminkey'].'">création de requêtes</a><br/>
 			Accéder aux <a href="stats.php?adminkey='.$_GET['adminkey'].'">statistiques</a><br/>';
 		}
 	}

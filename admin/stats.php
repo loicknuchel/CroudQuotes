@@ -7,6 +7,7 @@
 	include_once $server_link.'dao/retrieve.php';
 	include_once $server_link.'filtres/filtre.php';
 	include_once $server_link.'private_datas/filtre_fonc.php';
+	include_once $server_link.'globals/env.php';
 	include_once $server_link.'utils/convertVars.php';
 	
 	$usr = null;
@@ -52,7 +53,7 @@
 </head>
 <body>
 	<?php 
-		$dbVars = setDbVars();
+		$dbVars = setDbVars(getStatus());
 		dbConnect();
 		
 		function generate_line($usr, $title, $base_req, $date_col, $last_cell = ''){

@@ -8,13 +8,14 @@
 	include_once $server_link.'filtres/filtre.php';
 	include_once $server_link.'private_datas/filtre_fonc.php';
 	include_once $server_link.'globals/conventions.php';
+	include_once $server_link.'globals/env.php';
 	include_once $server_link.'utils/convertVars.php';
 	
 	$usr = null;
 	$usr['adminkey'] = isset($_GET['adminkey']) ? $_GET['adminkey'] : null;
 	filtreAdmin($usr); // exit if incorrect
 	
-	$dbVars = setDbVars();
+	$dbVars = setDbVars(getStatus());
 	dbConnect();
 	
 	if(isset($_GET['unreport']) && is_numeric($_GET['unreport'])){
