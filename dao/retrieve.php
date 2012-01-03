@@ -114,10 +114,12 @@
 		if($page == 'all'){ $limit = ""; }
 		else{ $limit = "LIMIT ".($page-1)*$env['categoryPageSize'].", ".$env['categoryPageSize'].""; }
 		
-		$req = "SELECT `id`, ".format_date('`post_date`').", `name`
-		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` 
-		WHERE service_id=".$usr['noService']."
-		ORDER BY `name` 
+		$req = "SELECT c.`id`, ".format_date('c.`post_date`').", c.`name`, count(q.`id`) as nbquotes
+		FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` c
+			LEFT OUTER JOIN `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` q ON q.service_id=c.service_id AND q.category=c.id AND q.quote_state=0
+		WHERE c.service_id=".$usr['noService']."
+		GROUP BY c.`id`
+		ORDER BY c.`name` 
 		".$limit.";";
 		
 		return getMultipleDataRows($req, $usr);
