@@ -20,11 +20,11 @@
 	
 	if(isset($_GET['unreport']) && is_numeric($_GET['unreport'])){
 		$id = (int) $_GET['unreport'];
-		$req = "UPDATE `".$dbVars['name']."`.`newCQ_comment` SET comment_state=0 WHERE service_id=".$usr['noService']." AND id=".$id.";";
+		$req = "UPDATE `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` SET comment_state=0 WHERE service_id=".$usr['noService']." AND id=".$id.";";
 		$res = query($req, $usr);
 		if($res == true){
 			$html = '<tr><td>comment '.$id.' unreported !</td><td><a href="'.$page.'?adminkey='.$usr['adminkey'].'">ok</a></td>
-			</tr><tr><td>action : '.$req.'</td></tr><tr><td>Undo action : UPDATE `'.$dbVars['name'].'`.`newCQ_comment` SET comment_state=1 WHERE service_id='.$usr['noService'].' AND id='.$id.';</td></tr>';
+			</tr><tr><td>action : '.$req.'</td></tr><tr><td>Undo action : UPDATE `'.$dbVars['DbName'].'`.`'.$dbVars['DbPrefix'].'comment` SET comment_state=1 WHERE service_id='.$usr['noService'].' AND id='.$id.';</td></tr>';
 		}
 		else{
 			$html = '<tr><td>fail unreport comment '.$id.' !!!!!!!</td><td><a href="'.$page.'?adminkey='.$usr['adminkey'].'">ok</a></td><td>'.$req.'</td></tr>';
@@ -33,11 +33,11 @@
 	}
 	else if(isset($_GET['delete']) && is_numeric($_GET['delete'])){
 		$id = (int) $_GET['delete'];
-		$req = "UPDATE `".$dbVars['name']."`.`newCQ_comment` SET comment_state=2 WHERE service_id=".$usr['noService']." AND id=".$id.";";
+		$req = "UPDATE `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` SET comment_state=2 WHERE service_id=".$usr['noService']." AND id=".$id.";";
 		$res = query($req, $usr);
 		if($res == true){
 			$html = '<tr><td>comment '.$id.' deleted !</td><td><a href="'.$page.'?adminkey='.$usr['adminkey'].'">ok</a></td>
-			</tr><tr><td>action : '.$req.'</td></tr><tr><td>Undo action : UPDATE `'.$dbVars['name'].'`.`newCQ_comment` SET comment_state=1 WHERE service_id='.$usr['noService'].' AND id='.$id.';</td></tr>';
+			</tr><tr><td>action : '.$req.'</td></tr><tr><td>Undo action : UPDATE `'.$dbVars['DbName'].'`.`'.$dbVars['DbPrefix'].'comment` SET comment_state=1 WHERE service_id='.$usr['noService'].' AND id='.$id.';</td></tr>';
 		}
 		else{
 			$html = '<tr><td>fail delete comment '.$id.' !!!!!!!</td><td><a href="'.$page.'?adminkey='.$usr['adminkey'].'">ok</a></td><td>'.$req.'</td></tr>';
@@ -53,7 +53,7 @@
 	else if(isset($_GET['causes']) && is_numeric($_GET['causes'])){
 		$id = (int) $_GET['causes'];
 		$title = 'causes for comment '.$id.'';
-		$req = "SELECT * FROM `".$dbVars['name']."`.`newCQ_reported_comment` WHERE service_id=".$usr['noService']." AND comment_id=".$id.";";
+		$req = "SELECT * FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."reported_comment` WHERE service_id=".$usr['noService']." AND comment_id=".$id.";";
 		$res = query($req, $usr);
 		if($res != null && mysql_num_rows($res) != 0){
 			$html = '<tr>
@@ -79,10 +79,10 @@
 	else{
 		if(isset($_GET['show_deleted']) && $_GET['show_deleted'] == 1){
 			$title = "DELETED comments :";
-			$req = "SELECT * FROM `".$dbVars['name']."`.`newCQ_comment` WHERE service_id=".$usr['noService']." AND comment_state=2;";
+			$req = "SELECT * FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` WHERE service_id=".$usr['noService']." AND comment_state=2;";
 		}
 		else{
-			$req = "SELECT * FROM `".$dbVars['name']."`.`newCQ_comment` WHERE service_id=".$usr['noService']." AND comment_state=1;";
+			$req = "SELECT * FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` WHERE service_id=".$usr['noService']." AND comment_state=1;";
 		}
 		
 		$res = query($req, $usr);

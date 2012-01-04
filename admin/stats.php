@@ -108,25 +108,25 @@
 		</tr>
 		<?php 
 			echo generate_interline();
-			echo generate_line($usr, 'quote', 				"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_quote` WHERE service_id=".$service_id." AND quote_state=0",		"post_date");
-			echo generate_line($usr, 'reported quote', 		"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_quote` WHERE service_id=".$service_id." AND quote_state=1",		"post_date", '<a href="./reported_quotes.php?adminkey='.$usr['adminkey'].'">see them</a>');
-			echo generate_line($usr, 'deleted quote', 		"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_quote` WHERE service_id=".$service_id." AND quote_state=2",		"post_date");
-			echo generate_line($usr, 'quote votes up', 		"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_vote_quote` WHERE service_id=".$service_id." AND vote=1", 		"post_date");
-			echo generate_line($usr, 'quote votes down',	"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_vote_quote` WHERE service_id=".$service_id." AND vote=0", 		"post_date");
-			echo generate_line($usr, 'quote votes total',	"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_vote_quote` WHERE service_id=".$service_id."", 					"post_date");
+			echo generate_line($usr, 'quote', 				"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` WHERE service_id=".$service_id." AND quote_state=0",		"post_date");
+			echo generate_line($usr, 'reported quote', 		"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` WHERE service_id=".$service_id." AND quote_state=1",		"post_date", '<a href="./reported_quotes.php?adminkey='.$usr['adminkey'].'">see them</a>');
+			echo generate_line($usr, 'deleted quote', 		"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."quote` WHERE service_id=".$service_id." AND quote_state=2",		"post_date");
+			echo generate_line($usr, 'quote votes up', 		"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."vote_quote` WHERE service_id=".$service_id." AND vote=1", 		"post_date");
+			echo generate_line($usr, 'quote votes down',	"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."vote_quote` WHERE service_id=".$service_id." AND vote=0", 		"post_date");
+			echo generate_line($usr, 'quote votes total',	"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."vote_quote` WHERE service_id=".$service_id."", 					"post_date");
 			echo generate_interline();
-			echo generate_line($usr, 'comment', 			"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_comment` WHERE service_id=".$service_id." AND comment_state=0",	"post_date");
-			echo generate_line($usr, 'reported comment',	"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_comment` WHERE service_id=".$service_id." AND comment_state=1", 	"post_date", '<a href="./reported_comments.php?adminkey='.$usr['adminkey'].'">see them</a>');
-			echo generate_line($usr, 'deleted comment', 	"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_comment` WHERE service_id=".$service_id." AND comment_state=2", 	"post_date");
-			echo generate_line($usr, 'comment votes up', 	"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_vote_comment` WHERE service_id=".$service_id." AND vote=1", 		"post_date");
-			echo generate_line($usr, 'comment votes down',	"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_vote_comment` WHERE service_id=".$service_id." AND vote=0", 		"post_date");
-			echo generate_line($usr, 'comment votes total',	"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_vote_comment` WHERE service_id=".$service_id."", 					"post_date");
+			echo generate_line($usr, 'comment', 			"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` WHERE service_id=".$service_id." AND comment_state=0",	"post_date");
+			echo generate_line($usr, 'reported comment',	"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` WHERE service_id=".$service_id." AND comment_state=1", "post_date", '<a href="./reported_comments.php?adminkey='.$usr['adminkey'].'">see them</a>');
+			echo generate_line($usr, 'deleted comment', 	"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."comment` WHERE service_id=".$service_id." AND comment_state=2", "post_date");
+			echo generate_line($usr, 'comment votes up', 	"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."vote_comment` WHERE service_id=".$service_id." AND vote=1", 	"post_date");
+			echo generate_line($usr, 'comment votes down',	"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."vote_comment` WHERE service_id=".$service_id." AND vote=0", 	"post_date");
+			echo generate_line($usr, 'comment votes total',	"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."vote_comment` WHERE service_id=".$service_id."", 				"post_date");
 			echo generate_interline();
-			echo generate_line($usr, 'selection', 			"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_selection` WHERE service_id=".$service_id."", 					"post_date");
-			echo generate_line($usr, 'category', 			"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_category` WHERE service_id=".$service_id."", 						"post_date");
+			echo generate_line($usr, 'selection', 			"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."selection` WHERE service_id=".$service_id."", 					"post_date");
+			echo generate_line($usr, 'category', 			"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."category` WHERE service_id=".$service_id."", 					"post_date");
 			echo generate_interline();
-			echo generate_line($usr, 'api call', 			"SELECT count(*) as res FROM `".$dbVars['name']."`.`newCQ_api_log` WHERE service_id=".$service_id."", 						"call_date");
-			echo generate_line($usr, 'unique ip', 			"SELECT count(DISTINCT call_ip) as res FROM `".$dbVars['name']."`.`newCQ_api_log` WHERE service_id=".$service_id."", 		"call_date");
+			echo generate_line($usr, 'api call', 			"SELECT count(*) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."api_log` WHERE service_id=".$service_id."", 					"call_date");
+			echo generate_line($usr, 'unique ip', 			"SELECT count(DISTINCT call_ip) as res FROM `".$dbVars['DbName']."`.`".$dbVars['DbPrefix']."api_log` WHERE service_id=".$service_id."", 		"call_date");
 			echo generate_interline();
 		?>
 	</table>
